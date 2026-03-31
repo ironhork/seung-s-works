@@ -1,1 +1,70 @@
-/* Add styles here */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+#word-study {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h1 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 24px;
+}
+
+#word-card {
+    margin: 20px 0;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#word {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+#definition {
+    font-size: 20px;
+    color: #555;
+}
+
+#next-word-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.2s;
+    width: 100%;
+}
+
+#next-word-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#next-word-button:active {
+    transform: translateY(0);
+}
