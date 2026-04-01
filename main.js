@@ -145,10 +145,9 @@ function checkAnswer(answer) {
     }
   }
 
-  // 예문 표시
+  // 예문 표시 및 스타일링
   let targetWord = source[current].word;
   let fullSentence = source[current].ex_en;
-  // 단어 강조 (대소문자 무시)
   let regex = new RegExp('(\b' + targetWord + '\w*)', 'gi');
   exampleEn.innerHTML = fullSentence.replace(regex, '<span class="highlight"></span>');
   exampleKo.innerText = source[current].ex_ko;
@@ -166,18 +165,35 @@ function showSummary() {
   resultEl.innerText = ''; exampleBox.style.display = 'none'; nextBtn.style.display = 'none';
 }
 
+function getAmericanVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  return voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || 
+         voices.find(v => v.lang === 'en-US') || 
+         voices.find(v => v.lang.startsWith('en'));
+}
+
 function speakWord() {
   let source = review ? wrongWords : words;
   let enWord = source[current].word;
   if (enWord) {
     let speech = new SpeechSynthesisUtterance(enWord);
-    const voices = window.speechSynthesis.getVoices();
-    const usVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
-    if (usVoice) speech.voice = usVoice;
+    speech.voice = getAmericanVoice();
     speech.lang = 'en-US'; speech.rate = 0.9;
     window.speechSynthesis.speak(speech);
   }
 }
+
+function speakExample() {
+  let source = review ? wrongWords : words;
+  let sentence = source[current].ex_en;
+  if (sentence) {
+    let speech = new SpeechSynthesisUtterance(sentence);
+    speech.voice = getAmericanVoice();
+    speech.lang = 'en-US'; speech.rate = 0.85; // 문장은 조금 더 천천히
+    window.speechSynthesis.speak(speech);
+  }
+}
+
 window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 (function() {
   const savedTheme = localStorage.getItem('theme');
