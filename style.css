@@ -42,142 +42,50 @@ body.dark-mode {
 
 body.dark-mode .container {
   background: #2a2a2a;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-h1 {
-  margin-top: 0;
-  font-size: 28px;
-  color: var(--primary-color);
-}
+h1 { margin: 0 0 20px 0; font-size: 24px; color: var(--primary-color); }
 
 #theme-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  background: var(--text-dark);
-  color: white;
+  position: fixed; top: 20px; right: 20px;
+  padding: 8px 16px; border-radius: 20px;
+  font-weight: 600; cursor: pointer; border: none;
+  background: var(--text-dark); color: white;
 }
 
-.mode-selector {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 25px;
-}
+.selector-group { margin-bottom: 20px; text-align: left; }
+.selector-label { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: block; color: #777; }
 
-.mode-selector button {
-  flex: 1;
-  padding: 10px;
-  font-size: 14px;
-  background: #eee;
-  color: #666;
-  border: 2px solid transparent;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.mode-selector button.active {
-  background: var(--primary-color);
-  color: white;
-  border-color: var(--primary-color);
-}
-
-#word-display {
-  margin: 30px 0;
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#word {
-  font-size: 48px;
-  font-weight: 800;
-  margin-bottom: 10px;
-}
-
-.choices-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.choice {
-  width: 100%;
-  margin: 0;
-  padding: 15px;
-  font-size: 18px;
-  border-radius: 12px;
-  background: var(--secondary-color);
-  color: var(--text-dark);
-  border: 1px solid #ddd;
-  font-weight: 500;
-  cursor: pointer;
+.btn-group { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; }
+.btn-group button {
+  flex: 1; padding: 10px; font-size: 14px;
+  background: #eee; color: #666; border: none;
+  border-radius: 10px; cursor: pointer; font-weight: 600;
   transition: all 0.2s;
 }
+.btn-group button.active { background: var(--primary-color); color: white; }
 
-.choice:hover {
-  background: #e2e8f0;
-  transform: translateY(-2px);
-}
+#word-display { margin: 20px 0; min-height: 80px; }
+#word { font-size: 42px; font-weight: 800; margin-bottom: 10px; }
 
-#result {
-  height: 30px;
-  margin: 15px 0;
-  font-weight: 700;
-  font-size: 20px;
+.choices-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+.choice {
+  padding: 15px; font-size: 17px; border-radius: 12px;
+  background: var(--secondary-color); color: var(--text-dark);
+  border: 1px solid #ddd; font-weight: 500; cursor: pointer;
 }
+.choice:hover { background: #e2e8f0; transform: translateY(-2px); }
 
-#score-board {
-  background: #f8fafc;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  font-size: 16px;
-}
+#result { height: 30px; margin: 10px 0; font-weight: 700; font-size: 18px; }
+#score-board { background: #f8fafc; padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 15px; }
+body.dark-mode #score-board { background: #333; }
 
-body.dark-mode #score-board {
-  background: #333;
-}
-
-.action-btns {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn-main {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  color: white;
-}
+.action-btns { display: flex; gap: 10px; }
+.btn-main { flex: 1; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; color: white; }
 
 #next-btn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 15px;
-  font-size: 18px;
-  font-weight: 700;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+  width: 100%; margin-bottom: 10px; padding: 15px; font-size: 17px;
+  font-weight: 700; background-color: var(--success-color);
+  color: white; border: none; border-radius: 10px; cursor: pointer;
 }
-
-button:active {
-  transform: scale(0.98);
-}
+button:active { transform: scale(0.98); }

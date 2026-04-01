@@ -77,6 +77,8 @@ const words = [
 let current;
 let score = 0;
 let total = 0;
+let currentQuestionNum = 0;
+let questionLimit = 10;
 let wrongWords = JSON.parse(localStorage.getItem('wrongWords')) || [];
 let review = false;
 let quizMode = 'en-ko';
@@ -88,6 +90,7 @@ const resultEl = document.getElementById('result');
 const scoreEl = document.getElementById('score');
 const nextBtn = document.getElementById('next-btn');
 const speakBtn = document.getElementById('speak-btn');
+const limitBtns = document.querySelectorAll('.limit-btn');
 
 function toggleTheme() {
   document.body.classList.toggle('dark-mode');
@@ -103,10 +106,18 @@ function setMode(mode) {
   speakBtn.style.visibility = (mode === 'en-ko') ? 'visible' : 'hidden';
 }
 
+function setLimit(limit) {
+  questionLimit = limit;
+  limitBtns.forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.innerText) === limit);
+  });
+}
+
 function startQuiz() {
   review = false;
   score = 0;
   total = 0;
+  currentQuestionNum = 0;
   nextQuestion();
 }
 
@@ -118,10 +129,16 @@ function reviewMode() {
   review = true;
   score = 0;
   total = 0;
+  currentQuestionNum = 0;
   nextQuestion();
 }
 
 function nextQuestion() {
+  if (currentQuestionNum >= questionLimit) {
+    showSummary();
+    return;
+  }
+
   resultEl.innerText = '';
   nextBtn.style.display = 'none';
   
@@ -162,6 +179,8 @@ function checkAnswer(answer) {
   let correctValue = (quizMode === 'en-ko') ? source[current].meaning : source[current].word;
 
   total++;
+  currentQuestionNum++;
+
   if (answer === correctValue) {
     score++;
     resultEl.innerText = '✅ 정답입니다!';
@@ -170,7 +189,6 @@ function checkAnswer(answer) {
     resultEl.innerText = '❌ 오답 (정답: ' + correctValue + ')';
     resultEl.style.color = '#dc3545';
     
-    // 오답 리스트에 추가 (중복 방지)
     if (!wrongWords.find(w => w.word === source[current].word)) {
       wrongWords.push(source[current]);
       localStorage.setItem('wrongWords', JSON.stringify(wrongWords));
@@ -181,7 +199,15 @@ function checkAnswer(answer) {
   if (quizMode === 'ko-en') speakBtn.style.visibility = 'visible';
 
   let rate = Math.round((score / total) * 100);
-  scoreEl.innerText = '점수: ' + score + ' / ' + total + ' | 정답률: ' + rate + '%';
+  scoreEl.innerText = '진행: ' + currentQuestionNum + '/' + questionLimit + ' | 점수: ' + score + ' | 정답률: ' + rate + '%';
+}
+
+function showSummary() {
+  wordEl.innerText = '학습 완료! 🎉';
+  choicesEl.innerHTML = '<h3>최종 점수: ' + score + ' / ' + questionLimit + '</h3>';
+  choicesEl.innerHTML += '<p>정답률: ' + Math.round((score / questionLimit) * 100) + '%</p>';
+  resultEl.innerText = '';
+  nextBtn.style.display = 'none';
 }
 
 function speakWord() {
@@ -189,12 +215,23 @@ function speakWord() {
   let enWord = source[current].word;
   if (enWord) {
     let speech = new SpeechSynthesisUtterance(enWord);
+    
+    // 미국인 발음 설정 (en-US)
+    const voices = window.speechSynthesis.getVoices();
+    const usVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) || 
+                    voices.find(v => v.lang === 'en-US') || 
+                    voices.find(v => v.lang.startsWith('en'));
+    
+    if (usVoice) speech.voice = usVoice;
     speech.lang = 'en-US';
+    speech.rate = 0.9; // 약간 천천히 읽어줌
     window.speechSynthesis.speak(speech);
   }
 }
 
-// 초기 테마 로드
+// 브라우저 보이스 로딩 대기
+window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+
 (function() {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
@@ -204,7 +241,6 @@ function speakWord() {
   }
 })();
 
-// 키보드 지원
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') {
     nextQuestion();

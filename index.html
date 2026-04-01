@@ -13,14 +13,27 @@
   <div class='container'>
     <h1>📚 TOEIC 단어 학습</h1>
 
-    <div class='mode-selector'>
-      <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
-      <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+    <div class='selector-group'>
+      <span class='selector-label'>학습 모드</span>
+      <div class='btn-group'>
+        <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
+        <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+      </div>
+    </div>
+
+    <div class='selector-group'>
+      <span class='selector-label'>문제 수 선택</span>
+      <div class='btn-group'>
+        <button class='limit-btn active' onclick='setLimit(10)'>10</button>
+        <button class='limit-btn' onclick='setLimit(30)'>30</button>
+        <button class='limit-btn' onclick='setLimit(50)'>50</button>
+        <button class='limit-btn' onclick='setLimit(100)'>100</button>
+      </div>
     </div>
 
     <div id='word-display'>
       <div id='word'>준비되셨나요?</div>
-      <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
+      <button id='speak-btn' onclick='speakWord()' style='visibility: hidden; background: none; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer; border-radius: 5px;'>🔊 발음 듣기</button>
     </div>
 
     <div id='choices' class='choices-grid'></div>
