@@ -139,3 +139,16 @@ body.dark-mode #score-board { background: #333; }
   color: white; border: none; border-radius: 10px; cursor: pointer;
 }
 button:active { transform: scale(0.98); }
+body.dark-mode .ex-speak-btn {
+  background: #444;
+  color: #fff;
+  border-color: #555;
+}
+body.dark-mode .ex-speak-btn:hover {
+  background: #555;
+}
+body.dark-mode #speak-btn {
+  background: #444;
+  color: #fff;
+  border-color: #555;
+}
