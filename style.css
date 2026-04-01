@@ -85,18 +85,24 @@ h1 { margin: 0 0 20px 0; font-size: 24px; color: var(--primary-color); }
   text-align: left;
   border-radius: 0 10px 10px 0;
   display: none;
-  position: relative;
 }
 body.dark-mode #example-box { background: #333; }
 
+#example-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
 #example-en {
-  color: #888; /* 기본 예문 텍스트 회색 */
+  color: #888;
   font-style: italic;
   font-weight: 500;
-  margin-bottom: 8px;
   font-size: 15px;
   line-height: 1.4;
-  padding-right: 40px;
+  flex: 1;
 }
 body.dark-mode #example-en { color: #aaa; }
 
@@ -109,16 +115,15 @@ body.dark-mode .highlight { color: #fff !important; }
 #example-ko { color: #777; font-size: 14px; }
 
 .ex-speak-btn {
-  position: absolute;
-  top: 15px;
-  right: 10px;
-  background: none;
+  background: white;
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 3px 6px;
+  padding: 4px 8px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .ex-speak-btn:hover { background: #eee; }
 
