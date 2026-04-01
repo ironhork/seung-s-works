@@ -6,65 +6,101 @@
 
 <style>
 
-body{
-font-family: Arial;
-text-align:center;
-background:#f4f6fb;
-padding-top:60px;
+:root {
+  --bg-color: #f4f6fb;
+  --text-color: #333;
+  --h1-color: #000;
+  --word-color: #000;
+  --btn-bg: #444;
+  --btn-text: #fff;
+  --choice-bg: #2e7df6;
+  --choice-hover: #1e5fd1;
 }
 
-h1{
-margin-bottom:30px;
+body.dark-mode {
+  --bg-color: #1a1a1a;
+  --text-color: #eee;
+  --h1-color: #fff;
+  --word-color: #fff;
+  --btn-bg: #555;
+  --btn-text: #fff;
+  --choice-bg: #3a8df8;
+  --choice-hover: #4a9df9;
 }
 
-#word{
-font-size:42px;
-font-weight:bold;
-margin-bottom:15px;
+body {
+  font-family: Arial;
+  text-align: center;
+  background: var(--bg-color);
+  color: var(--text-color);
+  padding-top: 60px;
+  transition: background 0.3s, color 0.3s;
 }
 
-.choice{
-display:block;
-width:260px;
-margin:10px auto;
-padding:12px;
-font-size:18px;
-border:none;
-border-radius:8px;
-background:#2e7df6;
-color:white;
-cursor:pointer;
+h1 {
+  margin-bottom: 30px;
+  color: var(--h1-color);
 }
 
-.choice:hover{
-background:#1e5fd1;
+#word {
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: var(--word-color);
 }
 
-#result{
-font-size:22px;
-margin-top:20px;
+.choice {
+  display: block;
+  width: 260px;
+  margin: 10px auto;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background: var(--choice-bg);
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-#score{
-margin-top:10px;
-font-size:18px;
+.choice:hover {
+  background: var(--choice-hover);
 }
 
-button{
-margin:10px;
-padding:10px 20px;
-font-size:16px;
-border:none;
-border-radius:6px;
-background:#444;
-color:white;
-cursor:pointer;
+#result {
+  font-size: 22px;
+  margin-top: 20px;
+}
+
+#score {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#theme-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 </style>
 </head>
 
 <body>
+
+<button id="theme-btn" onclick="toggleTheme()">🌙 다크모드</button>
 
 <h1>📚 TOEIC 단어 학습</h1>
 
@@ -176,6 +212,24 @@ let score = 0
 let total = 0
 let wrongWords = JSON.parse(localStorage.getItem("wrongWords")) || []
 let review = false
+
+function toggleTheme() {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-btn').innerText = isDark ? '☀️ 화이트모드' : '🌙 다크모드';
+}
+
+// 초기 테마 설정
+(function() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('theme-btn').innerText = '☀️ 화이트모드';
+    });
+  }
+})();
 
 
 function startQuiz(){
