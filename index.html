@@ -1,364 +1,44 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang='ko'>
 <head>
-<meta charset="UTF-8">
-<title>TOEIC 단어 학습</title>
-
-<style>
-
-:root {
-  --bg-color: #f4f6fb;
-  --text-color: #333;
-  --h1-color: #000;
-  --word-color: #000;
-  --btn-bg: #444;
-  --btn-text: #fff;
-  --choice-bg: #2e7df6;
-  --choice-hover: #1e5fd1;
-}
-
-body.dark-mode {
-  --bg-color: #1a1a1a;
-  --text-color: #eee;
-  --h1-color: #fff;
-  --word-color: #fff;
-  --btn-bg: #555;
-  --btn-text: #fff;
-  --choice-bg: #3a8df8;
-  --choice-hover: #4a9df9;
-}
-
-body {
-  font-family: Arial;
-  text-align: center;
-  background: var(--bg-color);
-  color: var(--text-color);
-  padding-top: 60px;
-  transition: background 0.3s, color 0.3s;
-}
-
-h1 {
-  margin-bottom: 30px;
-  color: var(--h1-color);
-}
-
-#word {
-  font-size: 42px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: var(--word-color);
-}
-
-.choice {
-  display: block;
-  width: 260px;
-  margin: 10px auto;
-  padding: 12px;
-  font-size: 18px;
-  border: none;
-  border-radius: 8px;
-  background: var(--choice-bg);
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.choice:hover {
-  background: var(--choice-hover);
-}
-
-#result {
-  font-size: 22px;
-  margin-top: 20px;
-}
-
-#score {
-  margin-top: 10px;
-  font-size: 18px;
-}
-
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#theme-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-</style>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>TOEIC VOCA Master</title>
+  <link rel='stylesheet' href='style.css'>
 </head>
-
 <body>
 
-<button id="theme-btn" onclick="toggleTheme()">🌙 다크모드</button>
+  <button id='theme-btn' onclick='toggleTheme()'>🌙 다크모드</button>
 
-<h1>📚 TOEIC 단어 학습</h1>
+  <div class='container'>
+    <h1>📚 TOEIC 단어 학습</h1>
 
-<div id="word">START 버튼을 누르세요</div>
+    <div class='mode-selector'>
+      <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
+      <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+    </div>
 
-<button onclick="speakWord()">🔊 발음</button>
+    <div id='word-display'>
+      <div id='word'>준비되셨나요?</div>
+      <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
+    </div>
 
-<div id="choices"></div>
+    <div id='choices' class='choices-grid'></div>
 
-<div id="result"></div>
+    <div id='result'></div>
 
-<div id="score"></div>
+    <div id='score-board'>
+      <div id='score'>시작 버튼을 눌러주세요</div>
+    </div>
 
-<button onclick="startQuiz()">START</button>
-<button onclick="reviewMode()">틀린 단어 복습</button>
+    <button id='next-btn' onclick='nextQuestion()' style='display:none;'>다음 단어 ➡️</button>
 
-<script>
+    <div class='action-btns'>
+      <button onclick='startQuiz()' class='btn-main' style='background-color: #4a90e2;'>학습 시작</button>
+      <button onclick='reviewMode()' class='btn-main' style='background-color: #6c757d;'>틀린 단어 복습</button>
+    </div>
+  </div>
 
-/* =====================
-TOEIC 단어 데이터
-(여기에 3000단어까지 추가 가능)
-===================== */
-
-let words = [
-
-{word:"abandon", meaning:"버리다"},
-{word:"access", meaning:"접근"},
-{word:"accompany", meaning:"동행하다"},
-{word:"achieve", meaning:"달성하다"},
-{word:"acknowledge", meaning:"인정하다"},
-{word:"acquire", meaning:"획득하다"},
-{word:"adjust", meaning:"조정하다"},
-{word:"administration", meaning:"관리"},
-{word:"advantage", meaning:"이점"},
-{word:"afford", meaning:"여유가 되다"},
-{word:"agenda", meaning:"안건"},
-{word:"agreement", meaning:"합의"},
-{word:"announce", meaning:"발표하다"},
-{word:"annual", meaning:"연간의"},
-{word:"appointment", meaning:"약속"},
-{word:"approve", meaning:"승인하다"},
-{word:"arrangement", meaning:"준비"},
-{word:"assistance", meaning:"도움"},
-{word:"attach", meaning:"첨부하다"},
-{word:"available", meaning:"이용 가능한"},
-{word:"budget", meaning:"예산"},
-{word:"candidate", meaning:"지원자"},
-{word:"capacity", meaning:"수용력"},
-{word:"certificate", meaning:"증명서"},
-{word:"conference", meaning:"회의"},
-{word:"confirm", meaning:"확인하다"},
-{word:"consider", meaning:"고려하다"},
-{word:"contract", meaning:"계약"},
-{word:"contribute", meaning:"기여하다"},
-{word:"customer", meaning:"고객"},
-{word:"deadline", meaning:"마감일"},
-{word:"department", meaning:"부서"},
-{word:"deliver", meaning:"배달하다"},
-{word:"demand", meaning:"수요"},
-{word:"discuss", meaning:"논의하다"},
-{word:"effective", meaning:"효과적인"},
-{word:"employee", meaning:"직원"},
-{word:"equipment", meaning:"장비"},
-{word:"estimate", meaning:"추정하다"},
-{word:"expand", meaning:"확장하다"},
-{word:"expense", meaning:"비용"},
-{word:"facility", meaning:"시설"},
-{word:"feedback", meaning:"피드백"},
-{word:"improve", meaning:"개선하다"},
-{word:"increase", meaning:"증가하다"},
-{word:"inventory", meaning:"재고"},
-{word:"maintain", meaning:"유지하다"},
-{word:"negotiate", meaning:"협상하다"},
-{word:"opportunity", meaning:"기회"},
-{word:"participate", meaning:"참여하다"},
-{word:"performance", meaning:"성과"},
-{word:"policy", meaning:"정책"},
-{word:"procedure", meaning:"절차"},
-{word:"promotion", meaning:"승진"},
-{word:"purchase", meaning:"구매"},
-{word:"recommend", meaning:"추천하다"},
-{word:"reduce", meaning:"줄이다"},
-{word:"refund", meaning:"환불"},
-{word:"register", meaning:"등록하다"},
-{word:"require", meaning:"요구하다"},
-{word:"reservation", meaning:"예약"},
-{word:"responsible", meaning:"책임 있는"},
-{word:"schedule", meaning:"일정"},
-{word:"shipment", meaning:"배송"},
-{word:"strategy", meaning:"전략"},
-{word:"submit", meaning:"제출하다"},
-{word:"supply", meaning:"공급"},
-{word:"survey", meaning:"조사"},
-{word:"transaction", meaning:"거래"},
-{word:"transportation", meaning:"운송"},
-{word:"update", meaning:"업데이트"},
-{word:"vacancy", meaning:"공석"},
-{word:"vendor", meaning:"판매업체"}
-
-];
-
-
-/* =====================
-학습 데이터
-===================== */
-
-let current
-let score = 0
-let total = 0
-let wrongWords = JSON.parse(localStorage.getItem("wrongWords")) || []
-let review = false
-
-function toggleTheme() {
-  document.body.classList.toggle('dark-mode');
-  const isDark = document.body.classList.contains('dark-mode');
-  localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  document.getElementById('theme-btn').innerText = isDark ? '☀️ 화이트모드' : '🌙 다크모드';
-}
-
-// 초기 테마 설정
-(function() {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('theme-btn').innerText = '☀️ 화이트모드';
-    });
-  }
-})();
-
-
-function startQuiz(){
-
-review = false
-score = 0
-total = 0
-
-nextQuestion()
-
-}
-
-
-function reviewMode(){
-
-review = true
-
-if(wrongWords.length === 0){
-
-alert("복습할 단어가 없습니다")
-
-return
-
-}
-
-nextQuestion()
-
-}
-
-
-function nextQuestion(){
-
-document.getElementById("result").innerText=""
-
-let source = review ? wrongWords : words
-
-current = Math.floor(Math.random()*source.length)
-
-let correct = source[current].meaning
-
-document.getElementById("word").innerText = source[current].word
-
-let options=[correct]
-
-while(options.length<4){
-
-let rand = words[Math.floor(Math.random()*words.length)].meaning
-
-if(!options.includes(rand)){
-
-options.push(rand)
-
-}
-
-}
-
-options.sort(()=>Math.random()-0.5)
-
-let html=""
-
-options.forEach(option=>{
-
-html+=`<button class="choice" onclick="checkAnswer('${option}')">${option}</button>`
-
-})
-
-document.getElementById("choices").innerHTML = html
-
-}
-
-
-function checkAnswer(answer){
-
-let source = review ? wrongWords : words
-
-let correct = source[current].meaning
-
-total++
-
-if(answer===correct){
-
-score++
-
-document.getElementById("result").innerText="✅ 정답"
-
-}else{
-
-document.getElementById("result").innerText="❌ 오답 (정답: "+correct+")"
-
-wrongWords.push(source[current])
-
-localStorage.setItem("wrongWords",JSON.stringify(wrongWords))
-
-}
-
-let rate = Math.round((score/total)*100)
-
-document.getElementById("score").innerText =
-"점수: "+score+" / "+total+"   정답률: "+rate+"%"
-
-}
-
-
-function speakWord(){
-
-let word=document.getElementById("word").innerText
-
-let speech=new SpeechSynthesisUtterance(word)
-
-speech.lang="en-US"
-
-speechSynthesis.speak(speech)
-
-}
-
-
-/* Enter → 다음 문제 */
-
-document.addEventListener("keydown",function(e){
-
-if(e.key==="Enter"){
-
-nextQuestion()
-
-}
-
-})
-
-</script>
-
+  <script src='main.js'></script>
 </body>
 </html>
