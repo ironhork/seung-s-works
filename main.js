@@ -148,7 +148,7 @@ function checkAnswer(answer) {
   // 예문 표시 및 스타일링
   let targetWord = source[current].word;
   let fullSentence = source[current].ex_en;
-  let regex = new RegExp('(\b' + targetWord + '\w*)', 'gi');
+  let regex = new RegExp('(\\b' + targetWord + '\\w*)', 'gi');
   exampleEn.innerHTML = fullSentence.replace(regex, '<span class="highlight"></span>');
   exampleKo.innerText = source[current].ex_ko;
   exampleBox.style.display = 'block';
