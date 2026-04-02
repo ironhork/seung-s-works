@@ -47,6 +47,8 @@ let total = 0;
 let currentQuestionNum = 0;
 let questionLimit = 10;
 let wrongWords = JSON.parse(localStorage.getItem('wrongWords')) || [];
+let scoreboard = JSON.parse(localStorage.getItem('scoreboard')) || [];
+let userNickname = localStorage.getItem('nickname') || '';
 let review = false;
 let quizMode = 'en-ko';
 
@@ -60,12 +62,70 @@ const exampleKo = document.getElementById('example-ko');
 const scoreEl = document.getElementById('score');
 const nextBtn = document.getElementById('next-btn');
 const speakBtn = document.getElementById('speak-btn');
+const nicknameInput = document.getElementById('nickname-input');
+const userWelcome = document.getElementById('user-welcome');
+const scoreboardList = document.getElementById('scoreboard-list');
 
 function toggleTheme() {
   document.body.classList.toggle('dark-mode');
   const isDark = document.body.classList.contains('dark-mode');
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
   document.getElementById('theme-btn').innerText = isDark ? '☀️ 화이트모드' : '🌙 다크모드';
+}
+
+function saveNickname() {
+  const val = nicknameInput.value.trim();
+  if (!val) { alert('닉네임을 입력해주세요!'); return; }
+  userNickname = val;
+  localStorage.setItem('nickname', val);
+  showWelcome();
+}
+
+function showWelcome() {
+  if (userNickname) {
+    nicknameInput.parentElement.style.display = 'none';
+    userWelcome.innerText = `반갑습니다, ${userNickname}님! 👋`;
+    userWelcome.style.display = 'block';
+  }
+}
+
+function loadScoreboard() {
+  scoreboardList.innerHTML = '';
+  if (scoreboard.length === 0) {
+    scoreboardList.innerHTML = '<p style="color:#999; text-align:center;">아직 기록이 없습니다.</p>';
+    return;
+  }
+  
+  // 점수 높은 순 -> 정답률 높은 순 정렬
+  scoreboard.sort((a, b) => b.score - a.score || b.rate - a.rate);
+  const top10 = scoreboard.slice(0, 10);
+  
+  top10.forEach((entry, index) => {
+    const item = document.createElement('div');
+    item.style.display = 'flex';
+    item.style.justifyContent = 'space-between';
+    item.style.padding = '8px 0';
+    item.style.borderBottom = '1px solid #f1f1f1';
+    item.innerHTML = `
+      <span><strong>${index + 1}. ${entry.nickname}</strong></span>
+      <span>${entry.score}/${entry.limit} (${entry.rate}%)</span>
+    `;
+    scoreboardList.appendChild(item);
+  });
+}
+
+function updateScoreboard(finalScore, limit) {
+  if (!userNickname) return;
+  const rate = Math.round((finalScore / limit) * 100);
+  scoreboard.push({
+    nickname: userNickname,
+    score: finalScore,
+    limit: limit,
+    rate: rate,
+    date: new Date().toLocaleDateString()
+  });
+  localStorage.setItem('scoreboard', JSON.stringify(scoreboard));
+  loadScoreboard();
 }
 
 function setMode(mode) {
@@ -204,6 +264,11 @@ window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoice
     if (themeBtn) themeBtn.innerText = '☀️ 화이트모드';
   }
 })();
+
+showWelcome();
+loadScoreboard();
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
+}); nextQuestion();
 });

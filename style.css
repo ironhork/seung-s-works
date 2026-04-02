@@ -73,10 +73,26 @@ h1 { margin: 0 0 20px 0; font-size: 24px; color: var(--primary-color); }
   background-size: 1em;
 }
 
-body.dark-mode #limit-select {
+body.dark-mode #limit-select, body.dark-mode #nickname-input {
   background-color: #333;
   color: #eee;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23eee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  border-color: #444;
+}
+
+#auth-section { transition: all 0.3s; }
+#user-welcome { font-weight: 700; color: var(--primary-color) !important; font-size: 16px; }
+
+#scoreboard-list div {
+  transition: background 0.2s;
+}
+#scoreboard-list div:hover {
+  background: rgba(0,0,0,0.02);
+}
+body.dark-mode #scoreboard-list div:hover {
+  background: rgba(255,255,255,0.05);
+}
+body.dark-mode #scoreboard-list div {
+  border-bottom-color: #444 !important;
 }
 
 .btn-group { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
