@@ -287,6 +287,14 @@ window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoice
 showWelcome();
 loadScoreboard();
 
+// 초기 복습 버튼 상태 설정
+if (wrongWords.length === 0) {
+  reviewBtn.disabled = true;
+  reviewBtn.style.opacity = '0.5';
+  reviewBtn.style.cursor = 'not-allowed';
+}
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
+});y === 'block') nextQuestion();
 });
