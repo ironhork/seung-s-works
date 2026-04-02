@@ -304,5 +304,4 @@ if (wrongWords.length === 0) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
-});y === 'block') nextQuestion();
 });
