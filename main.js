@@ -65,6 +65,7 @@ const speakBtn = document.getElementById('speak-btn');
 const nicknameInput = document.getElementById('nickname-input');
 const userWelcome = document.getElementById('user-welcome');
 const scoreboardList = document.getElementById('scoreboard-list');
+const scoreboardContainer = document.getElementById('scoreboard-container');
 
 function toggleTheme() {
   document.body.classList.toggle('dark-mode');
