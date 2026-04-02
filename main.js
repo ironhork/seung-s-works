@@ -41,7 +41,7 @@ const words = [
   {word:'terminate', meaning:'종료하다, 해지하다', ex_en:'Either party can terminate the agreement with 30 days notice.', ex_ko:'어느 쪽이든 30일 전 통지로 계약을 종료할 수 있습니다.'}
 ];
 
-let current;
+let activeWord;
 let score = 0;
 let total = 0;
 let currentQuestionNum = 0;
@@ -60,7 +60,6 @@ const exampleKo = document.getElementById('example-ko');
 const scoreEl = document.getElementById('score');
 const nextBtn = document.getElementById('next-btn');
 const speakBtn = document.getElementById('speak-btn');
-const limitBtns = document.querySelectorAll('.limit-btn');
 
 function toggleTheme() {
   document.body.classList.toggle('dark-mode');
@@ -78,9 +77,6 @@ function setMode(mode) {
 
 function setLimit(limit) {
   questionLimit = limit;
-  limitBtns.forEach(btn => {
-    btn.classList.toggle('active', parseInt(btn.innerText) === limit);
-  });
 }
 
 function startQuiz() {
@@ -101,10 +97,11 @@ function nextQuestion() {
   nextBtn.style.display = 'none';
   
   let source = review ? wrongWords : words;
-  current = Math.floor(Math.random() * source.length);
+  let randomIndex = Math.floor(Math.random() * source.length);
+  activeWord = source[randomIndex];
 
-  let questionText = (quizMode === 'en-ko') ? source[current].word : source[current].meaning;
-  let correctValue = (quizMode === 'en-ko') ? source[current].meaning : source[current].word;
+  let questionText = (quizMode === 'en-ko') ? activeWord.word : activeWord.meaning;
+  let correctValue = (quizMode === 'en-ko') ? activeWord.meaning : activeWord.word;
   wordEl.innerText = questionText;
 
   let options = [correctValue];
@@ -128,8 +125,7 @@ function nextQuestion() {
 
 function checkAnswer(answer) {
   if (nextBtn.style.display === 'block') return;
-  let source = review ? wrongWords : words;
-  let correctValue = (quizMode === 'en-ko') ? source[current].meaning : source[current].word;
+  let correctValue = (quizMode === 'en-ko') ? activeWord.meaning : activeWord.word;
   total++; currentQuestionNum++;
 
   if (answer === correctValue) {
@@ -139,18 +135,18 @@ function checkAnswer(answer) {
   } else {
     resultEl.innerText = '❌ 오답 (정답: ' + correctValue + ')';
     resultEl.style.color = '#dc3545';
-    if (!wrongWords.find(w => w.word === source[current].word)) {
-      wrongWords.push(source[current]);
+    if (!wrongWords.find(w => w.word === activeWord.word)) {
+      wrongWords.push(activeWord);
       localStorage.setItem('wrongWords', JSON.stringify(wrongWords));
     }
   }
 
   // 예문 표시 및 스타일링
-  let targetWord = source[current].word;
-  let fullSentence = source[current].ex_en;
+  let targetWord = activeWord.word;
+  let fullSentence = activeWord.ex_en;
   let regex = new RegExp('(\\b' + targetWord + '\\w*)', 'gi');
-  exampleEn.innerHTML = fullSentence.replace(regex, '<span class="highlight"></span>');
-  exampleKo.innerText = source[current].ex_ko;
+  exampleEn.innerHTML = fullSentence.replace(regex, '<span class="highlight">$1</span>');
+  exampleKo.innerText = activeWord.ex_ko;
   exampleBox.style.display = 'block';
 
   nextBtn.style.display = 'block';
@@ -173,10 +169,8 @@ function getAmericanVoice() {
 }
 
 function speakWord() {
-  let source = review ? wrongWords : words;
-  let enWord = source[current].word;
-  if (enWord) {
-    let speech = new SpeechSynthesisUtterance(enWord);
+  if (activeWord && activeWord.word) {
+    let speech = new SpeechSynthesisUtterance(activeWord.word);
     speech.voice = getAmericanVoice();
     speech.lang = 'en-US'; speech.rate = 0.9;
     window.speechSynthesis.speak(speech);
@@ -184,10 +178,8 @@ function speakWord() {
 }
 
 function speakExample() {
-  let source = review ? wrongWords : words;
-  let sentence = source[current].ex_en;
-  if (sentence) {
-    let speech = new SpeechSynthesisUtterance(sentence);
+  if (activeWord && activeWord.ex_en) {
+    let speech = new SpeechSynthesisUtterance(activeWord.ex_en);
     speech.voice = getAmericanVoice();
     speech.lang = 'en-US'; speech.rate = 0.85; // 문장은 조금 더 천천히
     window.speechSynthesis.speak(speech);

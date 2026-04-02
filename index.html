@@ -23,12 +23,12 @@
 
     <div class='selector-group'>
       <span class='selector-label'>문제 수 선택</span>
-      <div class='btn-group'>
-        <button class='limit-btn active' onclick='setLimit(10)'>10</button>
-        <button class='limit-btn' onclick='setLimit(30)'>30</button>
-        <button class='limit-btn' onclick='setLimit(50)'>50</button>
-        <button class='limit-btn' onclick='setLimit(100)'>100</button>
-      </div>
+      <select id='limit-select' onchange='setLimit(parseInt(this.value))'>
+        <option value='10'>10개</option>
+        <option value='30'>30개</option>
+        <option value='50'>50개</option>
+        <option value='100'>100개</option>
+      </select>
     </div>
 
     <div id='word-display'>

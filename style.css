@@ -56,6 +56,29 @@ h1 { margin: 0 0 20px 0; font-size: 24px; color: var(--primary-color); }
 .selector-group { margin-bottom: 15px; text-align: left; }
 .selector-label { font-size: 13px; font-weight: 700; margin-bottom: 5px; display: block; color: #777; }
 
+#limit-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  background: #eee;
+  color: #666;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+}
+
+body.dark-mode #limit-select {
+  background-color: #333;
+  color: #eee;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23eee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
 .btn-group { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
 .btn-group button {
   flex: 1; padding: 10px; font-size: 13px;
