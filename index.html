@@ -13,6 +13,16 @@
   <div class='container'>
     <h1>📚 TOEIC 단어 학습</h1>
 
+    <!-- 닉네임 등록 섹션 -->
+    <div id='auth-section' class='selector-group'>
+      <span class='selector-label'>사용자 설정</span>
+      <div style='display: flex; gap: 8px;'>
+        <input type='text' id='nickname-input' placeholder='닉네임 입력' style='flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ddd; outline: none;'>
+        <button onclick='saveNickname()' class='btn-main' style='background-color: var(--primary-color); padding: 10px 15px; flex: none; width: auto;'>저장</button>
+      </div>
+      <p id='user-welcome' style='font-size: 14px; margin-top: 8px; color: #555; display: none;'></p>
+    </div>
+
     <div class='selector-group'>
       <span class='selector-label'>학습 모드</span>
       <div class='btn-group'>
@@ -64,13 +74,6 @@
     <div id='scoreboard-container' style='margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px;'>
       <h2 style='font-size: 18px; margin-bottom: 15px; color: var(--primary-color);'>🏆 명예의 전당 (Top 10)</h2>
       <div id='scoreboard-list' style='text-align: left; font-size: 14px;'></div>
-    </div>
-  </div>
-
-  <script src='main.js'></script>
-</body>
-</html>   <button onclick='startQuiz()' class='btn-main' style='background-color: #4a90e2;'>학습 시작</button>
-      <button onclick='reviewMode()' class='btn-main' style='background-color: #6c757d;'>틀린 단어 복습</button>
     </div>
   </div>
 

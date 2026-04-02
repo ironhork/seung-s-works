@@ -270,5 +270,4 @@ loadScoreboard();
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
-}); nextQuestion();
 });
