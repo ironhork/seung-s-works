@@ -128,6 +128,15 @@ function checkAnswer(answer) {
   let correctValue = (quizMode === 'en-ko') ? activeWord.meaning : activeWord.word;
   total++; currentQuestionNum++;
 
+  const choices = document.querySelectorAll('.choice');
+  choices.forEach(btn => {
+    if (btn.innerText === correctValue) {
+      btn.classList.add('correct');
+    } else if (btn.innerText === answer && answer !== correctValue) {
+      btn.classList.add('wrong');
+    }
+  });
+
   if (answer === correctValue) {
     score++;
     resultEl.innerText = '✅ 정답입니다!';

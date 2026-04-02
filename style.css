@@ -95,8 +95,11 @@ body.dark-mode #limit-select {
   padding: 14px; font-size: 16px; border-radius: 12px;
   background: var(--secondary-color); color: var(--text-dark);
   border: 1px solid #ddd; font-weight: 500; cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
 }
 .choice:hover { background: #e2e8f0; transform: translateY(-2px); }
+.choice.correct { background-color: var(--success-color) !important; color: white !important; border-color: var(--success-color); }
+.choice.wrong { background-color: var(--danger-color) !important; color: white !important; border-color: var(--danger-color); }
 
 #result { font-weight: 700; font-size: 18px; margin-bottom: 10px; }
 
