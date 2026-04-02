@@ -66,14 +66,14 @@
     <button id='next-btn' onclick='nextQuestion()' style='display:none;'>다음 단어 ➡️</button>
 
     <div class='action-btns'>
-      <button onclick='startQuiz()' class='btn-main' style='background-color: #4a90e2;'>학습 시작</button>
-      <button onclick='reviewMode()' class='btn-main' style='background-color: #6c757d;'>틀린 단어 복습</button>
+      <button onclick='startQuiz()' class='btn-main' style='background-color: var(--primary-color);'>학습 시작</button>
+      <button onclick='reviewMode()' class='btn-main' style='background-color: #64748b;'>틀린 단어 복습</button>
     </div>
 
     <!-- 스코어보드 섹션 -->
-    <div id='scoreboard-container' style='margin-top: 25px; border-top: 1px solid #eee; padding-top: 20px;'>
-      <h2 style='font-size: 18px; margin-bottom: 15px; color: var(--primary-color);'>🏆 명예의 전당 (Top 10)</h2>
-      <div id='scoreboard-list' style='text-align: left; font-size: 14px;'></div>
+    <div id='scoreboard-container'>
+      <h2 style='color: var(--primary-color);'>🏆 명예의 전당 (Top 10)</h2>
+      <div id='scoreboard-list'></div>
     </div>
   </div>
 

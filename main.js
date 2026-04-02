@@ -92,11 +92,10 @@ function showWelcome() {
 function loadScoreboard() {
   scoreboardList.innerHTML = '';
   if (scoreboard.length === 0) {
-    scoreboardList.innerHTML = '<p style="color:#999; text-align:center;">아직 기록이 없습니다.</p>';
+    scoreboardList.innerHTML = '<p style="color:#999; text-align:center; padding: 20px;">아직 기록이 없습니다. 첫 번째 주인공이 되어보세요!</p>';
     return;
   }
   
-  // 점수 높은 순 -> 정답률 높은 순 정렬
   scoreboard.sort((a, b) => b.score - a.score || b.rate - a.rate);
   const top10 = scoreboard.slice(0, 10);
   
@@ -104,11 +103,22 @@ function loadScoreboard() {
     const item = document.createElement('div');
     item.style.display = 'flex';
     item.style.justifyContent = 'space-between';
-    item.style.padding = '8px 0';
-    item.style.borderBottom = '1px solid #f1f1f1';
+    item.style.alignItems = 'center';
+    
+    let rankDisplay = `<span class="rank-badge">${index + 1}</span>`;
+    if (index === 0) rankDisplay = '<span class="rank-badge">🥇</span>';
+    else if (index === 1) rankDisplay = '<span class="rank-badge">🥈</span>';
+    else if (index === 2) rankDisplay = '<span class="rank-badge">🥉</span>';
+
     item.innerHTML = `
-      <span><strong>${index + 1}. ${entry.nickname}</strong></span>
-      <span>${entry.score}/${entry.limit} (${entry.rate}%)</span>
+      <div style="display: flex; align-items: center;">
+        ${rankDisplay}
+        <strong style="font-size: 15px;">${entry.nickname}</strong>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-weight: 700;">${entry.score}/${entry.limit}</div>
+        <div style="font-size: 12px; color: var(--text-muted);">${entry.rate}%</div>
+      </div>
     `;
     scoreboardList.appendChild(item);
   });
