@@ -228,6 +228,7 @@ function showSummary() {
   wordEl.innerText = '학습 완료! 🎉';
   choicesEl.innerHTML = '<h3>최종 점수: ' + score + ' / ' + questionLimit + '</h3><p>정답률: ' + Math.round((score / questionLimit) * 100) + '%</p>';
   resultEl.innerText = ''; exampleBox.style.display = 'none'; nextBtn.style.display = 'none';
+  if (!review) updateScoreboard(score, questionLimit);
 }
 
 function getAmericanVoice() {
