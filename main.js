@@ -151,12 +151,14 @@ function setLimit(limit) {
 
 function startQuiz() {
   review = false; score = 0; total = 0; currentQuestionNum = 0;
+  scoreboardContainer.style.display = 'none';
   nextQuestion();
 }
 
 function reviewMode() {
   if (wrongWords.length === 0) { alert('복습할 단어가 없습니다'); return; }
   review = true; score = 0; total = 0; currentQuestionNum = 0;
+  scoreboardContainer.style.display = 'none';
   nextQuestion();
 }
 
