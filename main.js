@@ -217,10 +217,10 @@ function checkAnswer(answer) {
   if (answer === correctValue) {
     score++;
     resultEl.innerText = '✅ 정답입니다!';
-    resultEl.style.color = '#28a745';
+    resultEl.style.color = 'var(--success-color)';
   } else {
     resultEl.innerText = '❌ 오답 (정답: ' + correctValue + ')';
-    resultEl.style.color = '#dc3545';
+    resultEl.style.color = 'var(--danger-color)';
     if (!wrongWords.find(w => w.word === activeWord.word)) {
       wrongWords.push(activeWord);
       localStorage.setItem('wrongWords', JSON.stringify(wrongWords));

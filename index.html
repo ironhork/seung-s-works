@@ -16,11 +16,11 @@
     <!-- 닉네임 등록 섹션 -->
     <div id='auth-section' class='selector-group'>
       <span class='selector-label'>사용자 설정</span>
-      <div style='display: flex; gap: 8px;'>
-        <input type='text' id='nickname-input' placeholder='닉네임 입력' style='flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ddd; outline: none;'>
-        <button onclick='saveNickname()' class='btn-main' style='background-color: var(--primary-color); padding: 10px 15px; flex: none; width: auto;'>저장</button>
+      <div class='input-group'>
+        <input type='text' id='nickname-input' placeholder='닉네임 입력'>
+        <button onclick='saveNickname()' class='btn-main btn-save'>저장</button>
       </div>
-      <p id='user-welcome' style='font-size: 14px; margin-top: 8px; color: #555; display: none;'></p>
+      <p id='user-welcome' style='display: none;'></p>
     </div>
 
     <div class='selector-group'>
@@ -43,7 +43,7 @@
 
     <div id='word-display'>
       <div id='word'>준비되셨나요?</div>
-      <button id='speak-btn' onclick='speakWord()' style='visibility: hidden; background: none; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer; border-radius: 5px;'>🔊 발음 듣기</button>
+      <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
     </div>
 
     <div id='choices' class='choices-grid'></div>
@@ -66,13 +66,13 @@
     <button id='next-btn' onclick='nextQuestion()' style='display:none;'>다음 단어 ➡️</button>
 
     <div class='action-btns'>
-      <button onclick='startQuiz()' class='btn-main' style='background-color: var(--primary-color);'>학습 시작</button>
-      <button onclick='reviewMode()' class='btn-main' style='background-color: #64748b;'>틀린 단어 복습</button>
+      <button onclick='startQuiz()' class='btn-main btn-start'>학습 시작</button>
+      <button onclick='reviewMode()' class='btn-main btn-review'>틀린 단어 복습</button>
     </div>
 
     <!-- 스코어보드 섹션 -->
     <div id='scoreboard-container' style='display: none;'>
-      <h2 style='color: var(--primary-color);'>🏆 명예의 전당 (Top 10)</h2>
+      <h2>🏆 명예의 전당 (Top 10)</h2>
       <div id='scoreboard-list'></div>
     </div>
   </div>
