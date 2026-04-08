@@ -266,9 +266,18 @@ function toggleVoca() {
 
 function renderVoca() {
   vocaList.innerHTML = '';
+  // 알파벳 순으로 정렬
+  customVoca.sort((a, b) => a.word.toLowerCase().localeCompare(b.word.toLowerCase()));
+  
   customVoca.forEach((item, index) => {
     const li = document.createElement('li');
-    li.innerHTML = `<div><span>${item.word}</span>: ${item.meaning}</div><button class="delete-voca-btn" onclick="deleteCustomWord(${index})">×</button>`;
+    li.innerHTML = `
+      <div class="voca-item-info">
+        <span class="voca-word-text">${item.word}</span>
+        <span class="voca-meaning-text">${item.meaning}</span>
+      </div>
+      <button class="delete-voca-btn" onclick="deleteCustomWord(${index})" title="삭제">×</button>
+    `;
     vocaList.appendChild(li);
   });
 }
@@ -276,10 +285,18 @@ function renderVoca() {
 function addCustomWord() {
   const word = vocaWordInput.value.trim();
   const meaning = vocaMeaningInput.value.trim();
-  if (!word || !meaning) { alert('입력해주세요!'); return; }
+  if (!word || !meaning) { alert('단어와 뜻을 모두 입력해주세요!'); return; }
+  
+  // 중복 체크
+  if (customVoca.find(v => v.word.toLowerCase() === word.toLowerCase())) {
+    alert('이미 등록된 단어입니다!');
+    return;
+  }
+
   customVoca.push({ word, meaning });
   localStorage.setItem('customVoca', JSON.stringify(customVoca));
-  vocaWordInput.value = ''; vocaMeaningInput.value = ''; renderVoca();
+  vocaWordInput.value = ''; vocaMeaningInput.value = ''; 
+  renderVoca();
 }
 
 function deleteCustomWord(index) {
