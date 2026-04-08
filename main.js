@@ -48,6 +48,7 @@ let currentQuestionNum = 0;
 let questionLimit = 10;
 let wrongWords = JSON.parse(localStorage.getItem('wrongWords')) || [];
 let scoreboard = JSON.parse(localStorage.getItem('scoreboard')) || [];
+let customVoca = JSON.parse(localStorage.getItem('customVoca')) || [];
 let userNickname = localStorage.getItem('nickname') || '';
 let review = false;
 let quizMode = 'en-ko';
@@ -66,6 +67,10 @@ const nicknameInput = document.getElementById('nickname-input');
 const userWelcome = document.getElementById('user-welcome');
 const scoreboardList = document.getElementById('scoreboard-list');
 const scoreboardContainer = document.getElementById('scoreboard-container');
+const vocaContent = document.getElementById('voca-content');
+const vocaList = document.getElementById('voca-list');
+const vocaWordInput = document.getElementById('voca-word');
+const vocaMeaningInput = document.getElementById('voca-meaning');
 
 function toggleTheme() {
   document.body.classList.toggle('dark-mode');
@@ -84,7 +89,7 @@ function saveNickname() {
 
 function showWelcome() {
   if (userNickname) {
-    nicknameInput.parentElement.style.display = 'none';
+    if (nicknameInput && nicknameInput.parentElement) nicknameInput.parentElement.style.display = 'none';
     userWelcome.innerText = `반갑습니다, ${userNickname}님! 👋`;
     userWelcome.style.display = 'block';
   }
@@ -248,6 +253,7 @@ function showSummary() {
   document.getElementById('score-board').style.display = 'none';
   scoreboardContainer.style.display = 'block';
   
+  const reviewBtn = document.getElementById('review-btn');
   if (wrongWords.length > 0) {
     reviewBtn.disabled = false;
     reviewBtn.style.opacity = '1';
@@ -282,6 +288,44 @@ function speakExample() {
   }
 }
 
+// 나만의 단어장 기능
+function toggleVoca() {
+  const isNone = vocaContent.style.display === 'none';
+  vocaContent.style.display = isNone ? 'flex' : 'none';
+}
+
+function renderVoca() {
+  vocaList.innerHTML = '';
+  customVoca.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div>
+        <span>${item.word}</span>: ${item.meaning}
+      </div>
+      <button class="delete-voca-btn" onclick="deleteCustomWord(${index})">×</button>
+    `;
+    vocaList.appendChild(li);
+  });
+}
+
+function addCustomWord() {
+  const word = vocaWordInput.value.trim();
+  const meaning = vocaMeaningInput.value.trim();
+  if (!word || !meaning) { alert('단어와 뜻을 모두 입력해주세요!'); return; }
+  
+  customVoca.push({ word, meaning });
+  localStorage.setItem('customVoca', JSON.stringify(customVoca));
+  vocaWordInput.value = '';
+  vocaMeaningInput.value = '';
+  renderVoca();
+}
+
+function deleteCustomWord(index) {
+  customVoca.splice(index, 1);
+  localStorage.setItem('customVoca', JSON.stringify(customVoca));
+  renderVoca();
+}
+
 window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
 (function() {
   const savedTheme = localStorage.getItem('theme');
@@ -294,12 +338,16 @@ window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoice
 
 showWelcome();
 loadScoreboard();
+renderVoca();
 
 // 초기 복습 버튼 상태 설정
-if (wrongWords.length === 0) {
-  reviewBtn.disabled = true;
-  reviewBtn.style.opacity = '0.5';
-  reviewBtn.style.cursor = 'not-allowed';
+const reviewBtn = document.getElementById('review-btn');
+if (reviewBtn) {
+  if (wrongWords.length === 0) {
+    reviewBtn.disabled = true;
+    reviewBtn.style.opacity = '0.5';
+    reviewBtn.style.cursor = 'not-allowed';
+  }
 }
 
 document.addEventListener('keydown', (e) => {

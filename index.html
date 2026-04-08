@@ -77,6 +77,20 @@
     </div>
   </div>
 
+  <!-- 나만의 단어장 (플로팅) -->
+  <div id='my-voca-container'>
+    <button id='voca-toggle-btn' onclick='toggleVoca()'>📒 나만의 단어장</button>
+    <div id='voca-content' style='display: none;'>
+      <h3>📒 나만의 단어장</h3>
+      <div class='voca-inputs'>
+        <input type='text' id='voca-word' placeholder='단어 (English)'>
+        <input type='text' id='voca-meaning' placeholder='뜻 (Korean)'>
+        <button onclick='addCustomWord()' class='btn-add-voca'>추가</button>
+      </div>
+      <ul id='voca-list'></ul>
+    </div>
+  </div>
+
   <script src='main.js'></script>
 </body>
 </html>
