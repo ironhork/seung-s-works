@@ -3,100 +3,151 @@
 <head>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>TOEIC VOCA Master</title>
+  <title>TOEIC VOCA Master - 맞춤형 토익 단어 학습 및 퀴즈</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="사용자 정의 단어장 기능을 갖춘 효율적인 토익 단어 학습 도구입니다. 나만의 단어장을 만들고 무작위 퀴즈를 통해 토익 고득점을 달성하세요.">
+  <meta name="keywords" content="토익, TOEIC, 영어단어, 단어장, 토익퀴즈, 영단어암기, 무료토익공부">
+  <meta name="author" content="TOEIC VOCA Master">
+  <link rel="canonical" href="https://ironhork.github.io/seung-s-works/">
+  
+  <!-- Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-3034199051152303">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3034199051152303"
-     crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3034199051152303" crossorigin="anonymous"></script>
+  
   <link rel='stylesheet' href='style.css'>
 </head>
 <body>
 
-  <button id='theme-btn' onclick='toggleTheme()'>🌙 다크모드</button>
+  <!-- 상단 내비게이션 -->
+  <header>
+    <nav class="nav-container">
+      <div class="logo" onclick="showSection('home')">📚 VOCA Master</div>
+      <ul class="nav-menu">
+        <li onclick="showSection('home')">학습하기</li>
+        <li onclick="showSection('guide')">학습가이드</li>
+        <li onclick="showSection('about')">소개</li>
+      </ul>
+      <button id='theme-btn' onclick='toggleTheme()'>🌙</button>
+    </nav>
+  </header>
 
-  <div class='container'>
-    <h1>📚 TOEIC 단어 학습</h1>
+  <main class='container'>
+    
+    <!-- 메인 퀴즈 섹션 -->
+    <section id="home-section">
+      <h1>토익 필수 단어 마스터</h1>
+      <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
 
-    <!-- 닉네임 등록 섹션 -->
-    <div id='auth-section' class='selector-group'>
-      <span class='selector-label'>사용자 설정</span>
-      <div class='input-group'>
-        <input type='text' id='nickname-input' placeholder='닉네임 입력'>
-        <button onclick='saveNickname()' class='btn-main btn-save'>저장</button>
+      <!-- 닉네임 등록 섹션 -->
+      <div id='auth-section' class='selector-group text-left'>
+        <span class='selector-label'>사용자 설정</span>
+        <div class='input-group'>
+          <input type='text' id='nickname-input' placeholder='닉네임 입력'>
+          <button onclick='saveNickname()' class='btn-main btn-save'>저장</button>
+        </div>
+        <p id='user-welcome' style='display: none;'></p>
       </div>
-      <p id='user-welcome' style='display: none;'></p>
-    </div>
 
-    <div class='selector-group'>
-      <span class='selector-label'>학습 모드</span>
-      <div class='btn-group'>
-        <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
-        <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+      <div class='selector-group text-left'>
+        <span class='selector-label'>학습 설정</span>
+        <div class='settings-grid'>
+          <div>
+            <span class='sub-label'>모드</span>
+            <div class='btn-group'>
+              <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
+              <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+            </div>
+          </div>
+          <div>
+            <span class='sub-label'>문항 수</span>
+            <select id='limit-select' onchange='setLimit(parseInt(this.value))'>
+              <option value='10'>10개</option>
+              <option value='30'>30개</option>
+              <option value='50'>50개</option>
+            </select>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class='selector-group'>
-      <span class='selector-label'>문제 수 선택</span>
-      <select id='limit-select' onchange='setLimit(parseInt(this.value))'>
-        <option value='10'>10개</option>
-        <option value='30'>30개</option>
-        <option value='50'>50개</option>
-        <option value='100'>100개</option>
-      </select>
-    </div>
-
-    <div id='word-display'>
-      <div id='word'>준비되셨나요?</div>
-      <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
-    </div>
-
-    <div id='choices' class='choices-grid'></div>
-
-    <div id='result'></div>
-
-    <!-- 예문 표시 영역 -->
-    <div id='example-box'>
-      <div id='example-header'>
-        <div id='example-en'></div>
-        <button class='ex-speak-btn' onclick='speakExample()'>🔊 예문 듣기</button>
+      <div id='word-display'>
+        <div id='word'>준비되셨나요?</div>
+        <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
       </div>
-      <div id='example-ko'></div>
-    </div>
 
-    <div id='score-board'>
-      <div id='score'>시작 버튼을 눌러주세요</div>
-    </div>
+      <div id='choices' class='choices-grid'></div>
+      <div id='result'></div>
 
-    <button id='next-btn' onclick='nextQuestion()' style='display:none;'>다음 단어 ➡️</button>
+      <div id='example-box'>
+        <div id='example-header'>
+          <div id='example-en'></div>
+          <button class='ex-speak-btn' onclick='speakExample()'>🔊 예문 듣기</button>
+        </div>
+        <div id='example-ko'></div>
+      </div>
 
-    <div class='action-btns'>
-      <button onclick='startQuiz()' class='btn-main btn-start'>학습 시작</button>
-      <button id='review-btn' onclick='reviewMode()' class='btn-main btn-review'>틀린 단어 복습</button>
-      <button id='voca-quiz-btn' onclick='vocaQuizMode()' class='btn-main btn-voca-quiz'>나만의 퀴즈</button>
-    </div>
+      <div id='score-board'>
+        <div id='score'>시작 버튼을 눌러주세요</div>
+      </div>
 
-    <!-- 스코어보드 섹션 -->
-    <div id='scoreboard-container' style='display: none;'>
-      <h2>🏆 명예의 전당 (Top 10)</h2>
-      <div id='scoreboard-list'></div>
-    </div>
+      <button id='next-btn' onclick='nextQuestion()' style='display:none;'>다음 단어 ➡️</button>
+
+      <div class='action-btns'>
+        <button onclick='startQuiz()' class='btn-main btn-start'>학습 시작</button>
+        <button id='review-btn' onclick='reviewMode()' class='btn-main btn-review'>틀린 단어 복습</button>
+        <button id='voca-quiz-btn' onclick='vocaQuizMode()' class='btn-main btn-voca-quiz'>나만의 퀴즈</button>
+      </div>
+
+      <!-- 스코어보드 섹션 -->
+      <div id='scoreboard-container' style='display: none;'>
+        <h2 class="section-title">🏆 명예의 전당 (Top 10)</h2>
+        <div id='scoreboard-list'></div>
+      </div>
+    </section>
+
+    <!-- 학습 가이드 섹션 -->
+    <section id="guide-section" style="display: none;" class="text-left content-page">
+      <h2 class="section-title">💡 토익 단어 학습 가이드</h2>
+      <article>
+        <h3>1. 문맥을 통한 암기</h3>
+        <p>단어 자체만 외우기보다 예문을 통해 어떤 상황에서 쓰이는지 파악하는 것이 중요합니다. VOCA Master는 실제 토익 기출 유형의 예문을 제공합니다.</p>
+        
+        <h3>2. 반복 학습의 힘</h3>
+        <p>'틀린 단어 복습' 기능을 활용하여 기억이 희미해질 때쯤 다시 한 번 퀴즈를 풀어보세요. 망각 곡선을 이겨내는 가장 좋은 방법입니다.</p>
+        
+        <h3>3. 나만의 단어장 활용</h3>
+        <p>자신이 자주 틀리거나 생소한 비즈니스 용어를 직접 추가하고 퀴즈를 생성하여 집중 학습하세요.</p>
+      </article>
+    </section>
+
+    <!-- 소개 섹션 -->
+    <section id="about-section" style="display: none;" class="text-left content-page">
+      <h2 class="section-title">🧐 서비스 소개</h2>
+      <p>TOEIC VOCA Master는 바쁜 수험생들이 언제 어디서나 효율적으로 영단어를 학습할 수 있도록 설계된 웹 앱입니다.</p>
+      <p>단순한 암기를 넘어, 사용자가 직접 콘텐츠를 생산하고 이를 기반으로 학습할 수 있는 환경을 제공하여 높은 학습 효과를 목표로 합니다.</p>
+      <hr>
+      <div class="legal-info">
+        <h3>Privacy Policy & Terms</h3>
+        <p>본 서비스는 사용자의 닉네임과 학습 기록을 브라우저 로컬 저장소(LocalStorage)에만 저장하며, 서버로 수집하지 않습니다. 광고 수익은 서비스 유지 및 콘텐츠 보강에 사용됩니다.</p>
+        <p>문의: ironhork@example.com</p>
+      </div>
+    </section>
 
     <!-- 하단 광고 영역 -->
-    <div style="margin-top: 30px; min-height: 90px;">
+    <div class="ad-container">
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-3034199051152303"
            data-ad-slot="auto"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-  </div>
+  </main>
 
   <!-- 나만의 단어장 (플로팅) -->
   <div id='my-voca-container'>
-    <button id='voca-toggle-btn' onclick='toggleVoca()'>📒 나만의 단어장</button>
+    <button id='voca-toggle-btn' onclick='toggleVoca()'>📒 단어 관리</button>
     <div id='voca-content' style='display: none;'>
       <h3>📒 나만의 단어장</h3>
       <div class='voca-inputs'>
@@ -107,6 +158,16 @@
       <ul id='voca-list'></ul>
     </div>
   </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 TOEIC VOCA Master. All rights reserved.</p>
+      <div class="footer-links">
+        <span onclick="showSection('about')">개인정보처리방침</span> | 
+        <span onclick="showSection('guide')">이용가이드</span>
+      </div>
+    </div>
+  </footer>
 
   <script src='main.js'></script>
 </body>
