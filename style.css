@@ -3,7 +3,6 @@
   --secondary-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
   --success-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   --danger-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-  --voca-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   
   --primary-color: #667eea;
   --primary-hover: #5a6fd6;
@@ -146,6 +145,54 @@ header {
   border-radius: 12px;
 }
 
+/* Mode Selection (Language) */
+.btn-group {
+  display: flex;
+  gap: 8px;
+  background: var(--secondary-color);
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 10px;
+}
+
+.btn-group button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.btn-group button.active {
+  background: var(--card-bg);
+  color: var(--primary-color);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+body.dark-mode .btn-group button.active {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+/* Limit Select */
+#limit-select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--secondary-color);
+  color: var(--text-primary);
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
 /* Choices Buttons */
 .choices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; }
 .choice {
@@ -179,6 +226,69 @@ header {
   border-color: transparent !important;
   color: white !important;
   box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Example Box & Speak Buttons */
+#example-box {
+  margin-top: 25px;
+  padding: 25px;
+  background: var(--secondary-color);
+  border-radius: 20px;
+  text-align: left;
+  border-left: 5px solid var(--primary-color);
+  animation: fadeIn 0.4s ease;
+  display: none;
+}
+
+#example-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+#example-en {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+#example-ko {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.ex-speak-btn, #speak-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.ex-speak-btn:hover, #speak-btn:hover {
+  background: var(--primary-gradient);
+  color: white !important;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+#speak-btn {
+  margin: 0 auto 20px;
+  padding: 10px 20px;
+  font-size: 15px;
 }
 
 /* Floating Action Button */
@@ -226,8 +336,53 @@ h1 { font-size: 36px; font-weight: 900; margin-bottom: 10px; letter-spacing: -1p
 /* Ad Container */
 .ad-container { margin-top: 40px; padding: 20px; background: var(--secondary-color); border-radius: 20px; border: 1px dashed var(--border-color); }
 
+/* Footer */
+footer {
+  background: var(--card-bg);
+  padding: 40px 20px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 60px;
+  text-align: center;
+}
+
+.footer-content p { color: var(--text-muted); font-size: 14px; }
+
+.footer-links {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Link Style - Changed from plain text to ghost buttons */
+.footer-links span, .nav-menu li {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.footer-links span:hover, .nav-menu li:hover {
+  color: var(--primary-color);
+  background: var(--secondary-color);
+  border-color: var(--border-color);
+  transform: translateY(-2px);
+}
+
+.text-left { text-align: left; }
+.sub-label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+.section-title { margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color); display: inline-block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
 @media (max-width: 600px) {
   .nav-menu { display: none; }
   .choices-grid { grid-template-columns: 1fr; }
   .action-btns { flex-direction: column; }
+  .settings-grid { grid-template-columns: 1fr; }
 }
