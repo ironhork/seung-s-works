@@ -51,6 +51,7 @@ let scoreboard = JSON.parse(localStorage.getItem('scoreboard')) || [];
 let customVoca = JSON.parse(localStorage.getItem('customVoca')) || [];
 let userNickname = localStorage.getItem('nickname') || '';
 let review = false;
+let isVocaQuiz = false;
 let quizMode = 'en-ko';
 
 // Elements
@@ -156,7 +157,7 @@ function setLimit(limit) {
 }
 
 function startQuiz() {
-  review = false; score = 0; total = 0; currentQuestionNum = 0;
+  review = false; isVocaQuiz = false; score = 0; total = 0; currentQuestionNum = 0;
   scoreboardContainer.style.display = 'none';
   document.getElementById('score-board').style.display = 'block';
   scoreEl.innerText = '진행: 0/' + questionLimit + ' | 점수: 0 | 정답률: 0%';
@@ -165,20 +166,33 @@ function startQuiz() {
 
 function reviewMode() {
   if (wrongWords.length === 0) { alert('복습할 단어가 없습니다'); return; }
-  review = true; score = 0; total = 0; currentQuestionNum = 0;
+  review = true; isVocaQuiz = false; score = 0; total = 0; currentQuestionNum = 0;
   scoreboardContainer.style.display = 'none';
   document.getElementById('score-board').style.display = 'block';
   scoreEl.innerText = '진행: 0/' + wrongWords.length + ' | 점수: 0 | 정답률: 0%';
   nextQuestion();
 }
 
+function vocaQuizMode() {
+  if (customVoca.length < 4) { alert('나만의 단어장에 최소 4개 이상의 단어가 있어야 퀴즈를 시작할 수 있습니다!'); return; }
+  review = false; isVocaQuiz = true; score = 0; total = 0; currentQuestionNum = 0;
+  scoreboardContainer.style.display = 'none';
+  document.getElementById('score-board').style.display = 'block';
+  
+  let limit = Math.min(customVoca.length, questionLimit);
+  scoreEl.innerText = '진행: 0/' + limit + ' | 점수: 0 | 정답률: 0%';
+  nextQuestion();
+}
+
 function nextQuestion() {
-  if (currentQuestionNum >= questionLimit) { showSummary(); return; }
+  let source = isVocaQuiz ? customVoca : (review ? wrongWords : words);
+  let limit = isVocaQuiz ? Math.min(customVoca.length, questionLimit) : (review ? wrongWords.length : questionLimit);
+
+  if (currentQuestionNum >= limit) { showSummary(); return; }
   resultEl.innerText = '';
   exampleBox.style.display = 'none';
   nextBtn.style.display = 'none';
   
-  let source = review ? wrongWords : words;
   let randomIndex = Math.floor(Math.random() * source.length);
   activeWord = source[randomIndex];
 
@@ -187,8 +201,9 @@ function nextQuestion() {
   wordEl.innerText = questionText;
 
   let options = [correctValue];
+  let allPossibleWords = [...words, ...customVoca];
   while (options.length < 4) {
-    let randObj = words[Math.floor(Math.random() * words.length)];
+    let randObj = allPossibleWords[Math.floor(Math.random() * allPossibleWords.length)];
     let randValue = (quizMode === 'en-ko') ? randObj.meaning : randObj.word;
     if (!options.includes(randValue)) options.push(randValue);
   }
@@ -232,23 +247,29 @@ function checkAnswer(answer) {
     }
   }
 
-  // 예문 표시 및 스타일링
-  let targetWord = activeWord.word;
-  let fullSentence = activeWord.ex_en;
-  let regex = new RegExp('(\\b' + targetWord + '\\w*)', 'gi');
-  exampleEn.innerHTML = fullSentence.replace(regex, '<span class="highlight">$1</span>');
-  exampleKo.innerText = activeWord.ex_ko;
-  exampleBox.style.display = 'block';
+  if (activeWord.ex_en && activeWord.ex_ko) {
+    let targetWord = activeWord.word;
+    let fullSentence = activeWord.ex_en;
+    let regex = new RegExp('(\\b' + targetWord + '\\w*)', 'gi');
+    exampleEn.innerHTML = fullSentence.replace(regex, '<span class="highlight">$1</span>');
+    exampleKo.innerText = activeWord.ex_ko;
+    exampleBox.style.display = 'block';
+  } else {
+    exampleBox.style.display = 'none';
+  }
 
   nextBtn.style.display = 'block';
   if (quizMode === 'ko-en') speakBtn.style.visibility = 'visible';
+  
+  let limit = isVocaQuiz ? Math.min(customVoca.length, questionLimit) : (review ? wrongWords.length : questionLimit);
   let rate = Math.round((score / total) * 100);
-  scoreEl.innerText = '진행: ' + currentQuestionNum + '/' + questionLimit + ' | 점수: ' + score + ' | 정답률: ' + rate + '%';
+  scoreEl.innerText = '진행: ' + currentQuestionNum + '/' + limit + ' | 점수: ' + score + ' | 정답률: ' + rate + '%';
 }
 
 function showSummary() {
+  let limit = isVocaQuiz ? Math.min(customVoca.length, questionLimit) : (review ? wrongWords.length : questionLimit);
   wordEl.innerText = '학습 완료! 🎉';
-  choicesEl.innerHTML = '<h3>최종 점수: ' + score + ' / ' + questionLimit + '</h3><p>정답률: ' + Math.round((score / questionLimit) * 100) + '%</p>';
+  choicesEl.innerHTML = '<h3>최종 점수: ' + score + ' / ' + limit + '</h3><p>정답률: ' + Math.round((score / limit) * 100) + '%</p>';
   resultEl.innerText = ''; exampleBox.style.display = 'none'; nextBtn.style.display = 'none';
   document.getElementById('score-board').style.display = 'none';
   scoreboardContainer.style.display = 'block';
@@ -260,7 +281,7 @@ function showSummary() {
     reviewBtn.style.cursor = 'pointer';
   }
   
-  if (!review) updateScoreboard(score, questionLimit);
+  if (!review && !isVocaQuiz) updateScoreboard(score, questionLimit);
 }
 
 function getAmericanVoice() {
@@ -283,12 +304,11 @@ function speakExample() {
   if (activeWord && activeWord.ex_en) {
     let speech = new SpeechSynthesisUtterance(activeWord.ex_en);
     speech.voice = getAmericanVoice();
-    speech.lang = 'en-US'; speech.rate = 0.85; // 문장은 조금 더 천천히
+    speech.lang = 'en-US'; speech.rate = 0.85;
     window.speechSynthesis.speak(speech);
   }
 }
 
-// 나만의 단어장 기능
 function toggleVoca() {
   const isNone = vocaContent.style.display === 'none';
   vocaContent.style.display = isNone ? 'flex' : 'none';
@@ -340,7 +360,6 @@ showWelcome();
 loadScoreboard();
 renderVoca();
 
-// 초기 복습 버튼 상태 설정
 const reviewBtn = document.getElementById('review-btn');
 if (reviewBtn) {
   if (wrongWords.length === 0) {
