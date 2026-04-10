@@ -77,9 +77,26 @@ const vocaMeaningInput = document.getElementById('voca-meaning');
 function showSection(sectionId) {
   const sections = ['home', 'guide', 'about'];
   sections.forEach(s => {
-    document.getElementById(`${s}-section`).style.display = (s === sectionId) ? 'block' : 'none';
+    const el = document.getElementById(`${s}-section`);
+    if (el) el.style.display = (s === sectionId) ? 'block' : 'none';
   });
   window.scrollTo(0, 0);
+}
+
+// 탭 전환 기능
+function openTab(evt, tabName) {
+  const tabContents = document.getElementsByClassName("tab-content");
+  for (let i = 0; i < tabContents.length; i++) {
+    tabContents[i].classList.remove("active");
+  }
+
+  const tabBtns = document.getElementsByClassName("tab-btn");
+  for (let i = 0; i < tabBtns.length; i++) {
+    tabBtns[i].classList.remove("active");
+  }
+
+  document.getElementById(tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
 }
 
 function toggleTheme() {
