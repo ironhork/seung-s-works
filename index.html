@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>TOEIC VOCA Master - 맞춤형 토익 단어 학습 및 퀴즈</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="사용자 정의 단어장 기능을 갖춘 효율적인 토익 단어 학습 도구입니다. 나만의 단어장을 만들고 무작위 퀴즈를 통해 토익 고득점을 달성하세요.">
+  <meta name="keywords" content="토익, TOEIC, 영어단어, 단어장, 토익퀴즈, 영단어암기, 무료토익공부">
+  <meta name="author" content="TOEIC VOCA Master">
+  <link rel="canonical" href="https://ironhork.github.io/seung-s-works/">
+  
+  <!-- Google AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-3034199051152303">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3034199051152303" crossorigin="anonymous"></script>
+  
+  <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+
+  <!-- 상단 내비게이션 -->
+  <header>
+    <nav class="nav-container">
+      <div class="logo" onclick="showSection('home')">📚 VOCA Master</div>
+      <ul class="nav-menu">
+        <li onclick="showSection('home')">학습하기</li>
+        <li onclick="showSection('articles')">학습칼럼</li>
+        <li onclick="showSection('guide')">학습가이드</li>
+        <li onclick="showSection('about')">소개</li>
+      </ul>
+      <button id='theme-btn' onclick='toggleTheme()'>🌙</button>
+    </nav>
+  </header>
+
+  <main class='container'>
+    
+    <!-- 메인 퀴즈 섹션 -->
+    <section id="home-section">
+      <h1>토익 필수 단어 마스터</h1>
+      <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
+
+      <!-- 닉네임 등록 섹션 -->
+      <div id='auth-section' class='selector-group text-left'>
+        <span class='selector-label'>사용자 설정</span>
+        <div class='input-group'>
+          <input type='text' id='nickname-input' placeholder='닉네임 입력'>
+          <button onclick='saveNickname()' class='btn-main btn-save'>저장</button>
+        </div>
+        <p id='user-welcome' style='display: none;'></p>
+      </div>
+
+      <div class='selector-group text-left'>
+        <span class='selector-label'>학습 설정</span>
+        <div class='settings-grid'>
+          <div>
+            <span class='sub-label'>모드</span>
+            <div class='btn-group'>
+              <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
+              <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+            </div>
+          </div>
+          <div>
+            <span class='sub-label'>문항 수</span>
+            <select id='limit-select' onchange='setLimit(parseInt(this.value))'>
+              <option value='10'>10개</option>
+              <option value='30'>30개</option>
+              <option value='50'>50개</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id='word-display'>
+        <div id='word'>준비되셨나요?</div>
+        <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
+      </div>
+
+      <div id='choices' class='choices-grid'></div>
+      <div id='result'></div>
+
+      <div id='example-box'>
+        <div id='example-header'>
+          <div id='example-en'></div>
+          <button class='ex-speak-btn' onclick='speakExample()'>🔊 예문 듣기</button>
+        </div>
+        <div id='example-ko'></div>
+      </div>
+
+      <div id='score-board'>
+        <div id='score'>시작 버튼을 눌러주세요</div>
+      </div>
+
+      <button id='next-btn' onclick='nextQuestion()' style='display:none;'>다음 단어 ➡️</button>
+
+      <div class='action-btns'>
+        <button onclick='startQuiz()' class='btn-main btn-start'>학습 시작</button>
+        <button id='review-btn' onclick='reviewMode()' class='btn-main btn-review'>틀린 단어 복습</button>
+        <button id='voca-quiz-btn' onclick='vocaQuizMode()' class='btn-main btn-voca-quiz'>나만의 퀴즈</button>
+      </div>
+
+      <!-- 스코어보드 섹션 -->
+      <div id='scoreboard-container' style='display: none;'>
+        <h2 class="section-title">🏆 명예의 전당 (Top 10)</h2>
+        <div id='scoreboard-list'></div>
+      </div>
+    </section>
+
+    <!-- 학습 칼럼 섹션 -->
+    <section id="articles-section" style="display: none;" class="text-left content-page">
+      <h2 class="section-title">📚 TOEIC 고득점 전략 칼럼</h2>
+      <article class="prose">
+        <div class="article-card">
+          <h3>[칼럼 1] 토익 단어, 무작정 외우면 실패하는 이유</h3>
+          <p>많은 수험생들이 토익 공부를 시작할 때 '노랭이' 같은 단어장을 사서 첫 장부터 무작정 외우기 시작합니다. 하지만 이 방식은 효율이 매우 떨어집니다. 토익은 '비즈니스 상황'이라는 명확한 테마가 있는 시험입니다. 단순히 'confirm'이 '확인하다'라는 것만 아는 것보다, 이것이 'confirm the reservation'(예약을 확인하다)처럼 어떤 단어와 짝을 이루어 쓰이는지(Collocation)를 파악하는 것이 중요합니다.</p>
+          <p>저희 VOCA Master는 모든 단어에 실제 기출 변형 예문을 포함하고 있습니다. 단어를 외울 때 반드시 예문을 함께 읽고, 해당 단어가 문장 내에서 어떤 품사적 위치에 있는지 확인하는 습관을 들이세요.</p>
+        </div>
+
+        <div class="article-card">
+          <h3>[칼럼 2] LC Part 1, 2에서 점수가 안 나오는 분들을 위한 팁</h3>
+          <p>Part 1과 2는 짧은 문장들이 빠르게 지나가기 때문에 순간적인 집중력이 필요합니다. 여기서 가장 중요한 것은 '오답 소거법'입니다. 특히 Part 2의 경우, 의문사(Who, When, Where 등)를 정확히 듣는 연습과 함께, 질문에 나온 단어와 비슷한 발음이 보기에 나오면 오답일 확률이 90% 이상이라는 점을 이용해야 합니다.</p>
+          <p>또한, 최근 토익은 '우회적인 답변'이 대세입니다. "언제 회의가 시작되나요?"라는 질문에 "제 일정을 확인해봐야겠어요"라고 답하는 식이죠. 이러한 패턴을 익히기 위해서는 평소에 다양한 상황의 문장들을 소리 내어 읽어보는 '쉐도잉' 연습이 필수적입니다.</p>
+        </div>
+
+        <div class="article-card">
+          <h3>[칼럼 3] 문법 기초가 부족한 수험생의 공부 순서</h3>
+          <p>문법 공부를 할 때 모든 문법을 다 공부하려고 하지 마세요. 토익 Part 5에서 자주 출제되는 문법은 정해져 있습니다. 수 일치, 시제, 수동태/능동태, 그리고 가장 많이 나오는 '품사 문제'입니다. 문장의 구조(주어, 동사, 목적어)를 파악하는 연습을 먼저 하세요.</p>
+          <p>수식어구(전치사구, 부사절 등)를 괄호로 묶어내는 연습만 잘 해도 Part 5의 절반은 맞추고 들어갈 수 있습니다. 문법 이론서를 1회독 했다면 바로 기출 문제 풀이로 넘어가서, 자신이 어떤 유형에서 틀리는지 오답 노트를 작성하는 것이 가장 빠른 길입니다.</p>
+        </div>
+
+        <div class="article-card">
+          <h3>[칼럼 4] 독해(Part 7) 시간 단축의 핵심 비결</h3>
+          <p>Part 7에서 시간이 부족한 이유는 지문을 처음부터 끝까지 다 읽고 문제를 풀려고 하기 때문입니다. 우선 '문제의 질문'을 먼저 읽으세요. 질문에서 무엇을 묻는지(사람 이름, 날짜, 목적 등)를 파악한 뒤 지문에서 해당 키워드를 찾아내는 '스캐닝' 기법이 필요합니다.</p>
+          <p>또한 연계 지문(2중, 3중 지문)의 경우, 첫 번째 지문과 두 번째 지문의 정보를 연결해야 풀 수 있는 문제가 반드시 출제됩니다. 예를 들어 첫 번째 지문의 이메일 날짜와 두 번째 지문의 가격표 유효 기간을 대조하는 식이죠. 이러한 연결 고리를 찾는 연습을 반복하세요.</p>
+        </div>
+
+        <div class="article-card">
+          <h3>[칼럼 5] 슬럼프 극복: 토익 점수가 정체기일 때</h3>
+          <p>700점대나 800점대에서 점수가 오르지 않는 분들은 보통 자신이 잘 하는 부분만 계속 공부하는 경향이 있습니다. 이때는 과감하게 공부 방식을 바꿔야 합니다. LC가 강점이라면 RC 비중을 80%까지 높이고, 특히 자신이 약한 특정 파트만 며칠 동안 집중적으로 파는 '몰입 공부법'이 효과적입니다.</p>
+          <p>또한, 실전 감각을 유지하기 위해 일주일에 최소 1회는 실제 시험 시간(2시간)을 똑같이 재고 모의고사를 풀어보는 것이 중요합니다. 점수가 오르지 않는 것은 실력이 부족해서가 아니라, 자신의 약점을 정확히 파악하지 못했기 때문일 가능성이 큽니다.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 학습 가이드 섹션 -->
+    <section id="guide-section" style="display: none;" class="text-left content-page">
+      <h2 class="section-title">💡 효율적인 토익 단어 학습 전략</h2>
+      <article class="prose">
+        <h3>1. 문맥과 함께 암기하는 습관</h3>
+        <p>단어 하나만 달랑 외우는 방식은 실제 시험에서 적용하기 어렵습니다. VOCA Master는 실제 토익 기출 유형을 반영한 고퀄리티 예문을 함께 제공합니다. 예문 속에서 단어가 어떤 품사로 쓰이는지, 어떤 전치사와 짝을 이루는지 확인하며 학습하세요.</p>
+        
+        <h3>2. 에빙하우스의 망각 곡선 활용</h3>
+        <p>사람은 학습 후 20분만 지나도 42%를 잊어버린다고 합니다. '틀린 단어 복습' 기능을 활용하여 학습 직후, 1시간 후, 그리고 다음 날 반복적으로 퀴즈를 풀어보세요. 반복은 단기 기억을 장기 기억으로 전환하는 유일한 방법입니다.</p>
+        
+        <h3>3. 나만의 단어장으로 약점 공략</h3>
+        <p>시중에 파는 단어장에는 이미 아는 단어가 너무 많습니다. 자신이 유독 헷갈려 하는 비즈니스 용어나 오답 노트에 적어둔 단어들을 직접 '나만의 단어장'에 추가하세요. 자신에게 최적화된 콘텐츠로 학습할 때 효율은 극대화됩니다.</p>
+
+        <h3>4. 파트별 빈출 단어 특징 파악</h3>
+        <p>토익은 비즈니스 상황을 다루는 시험입니다. 'Schedule', 'Postpone', 'Confirm'과 같은 일정 관련 단어들이 Part 5, 6 뿐만 아니라 Part 7 이메일 지문에서도 어떻게 변형되어 나오는지 이해하는 것이 고득점의 비결입니다.</p>
+      </article>
+    </section>
+
+    <!-- 소개 섹션 -->
+    <section id="about-section" style="display: none;" class="text-left content-page">
+      <h2 class="section-title">🧐 서비스 소개 및 정책</h2>
+      
+      <div class="tab-container">
+        <div class="tab-menu">
+          <button class="tab-btn active" onclick="openTab(event, 'brand-story')">브랜드 스토리</button>
+          <button class="tab-btn" onclick="openTab(event, 'privacy-policy')">개인정보처리방침</button>
+          <button class="tab-btn" onclick="openTab(event, 'terms')">이용약관</button>
+          <button class="tab-btn" onclick="openTab(event, 'contact')">문의하기</button>
+        </div>
+
+        <div id="brand-story" class="tab-content active">
+          <h3>TOEIC VOCA Master의 탄생 배경</h3>
+          <p>우리는 수천 명의 수험생들이 두꺼운 단어장을 들고 다니며 괴로워하는 모습을 보았습니다. 디지털 시대에 걸맞은, 더 가볍고 더 똑똑한 학습 도구가 필요하다고 확신했습니다.</p>
+          <p>VOCA Master는 단순한 웹 앱을 넘어, 학습자가 주도적으로 자신의 지식을 관리하고 검증할 수 있는 '개인화된 학습 플랫폼'을 지향합니다. 누구나 무료로 최고의 교육 콘텐츠에 접근할 수 있어야 한다는 믿음으로 서비스를 운영하고 있습니다.</p>
+        </div>
+
+        <div id="privacy-policy" class="tab-content">
+          <h3>개인정보처리방침 (Privacy Policy)</h3>
+          <p>본 서비스는 사용자의 개인정보 보호를 최우선으로 생각하며, 구글 애드센스 정책 및 관련 법령을 준수합니다.</p>
+          <ul>
+            <li><strong>데이터 저장:</strong> 사용자가 입력한 닉네임, 학습 점수, 나만의 단어장 데이터는 사용자의 브라우저 로컬 저장소(LocalStorage)에만 저장됩니다. 본 서비스는 별도의 서버로 사용자의 데이터를 전송하거나 수집하지 않으며, 회원가입 절차를 요구하지 않습니다.</li>
+            <li><strong>쿠키 및 광고:</strong> 본 웹사이트는 구글(Google)에서 제공하는 광고 서비스인 '구글 애드센스(Google AdSense)'를 이용합니다. 구글은 사용자가 본 웹사이트 또는 다른 웹사이트를 방문한 기록을 바탕으로 광고를 제공하기 위해 쿠키를 사용합니다.</li>
+            <li><strong>DART 쿠키:</strong> 구글의 광고 쿠키 사용을 통해 구글 및 파트너사는 본 사이트 및 인터넷상의 다른 사이트 방문 정보를 토대로 사용자에게 맞춤형 광고를 게재할 수 있습니다.</li>
+            <li><strong>개인정보 수집 항목:</strong> 본 사이트는 직접적인 개인 식별 정보(이름, 이메일, 전화번호 등)를 수집하지 않습니다. 다만, 구글 애드센스를 통해 비식별 정보가 맞춤형 광고 제공 목적으로 사용될 수 있습니다.</li>
+            <li><strong>사용자 권리:</strong> 사용자는 구글의 <a href="https://adssettings.google.com" target="_blank">광고 설정</a>을 방문하여 맞춤설정 광고를 거부할 수 있습니다. 또한 브라우저 설정을 통해 쿠키 저장을 거부할 수 있습니다.</li>
+          </ul>
+        </div>
+
+        <div id="terms" class="tab-content">
+          <h3>이용약관 (Terms of Service)</h3>
+          <p>1. 본 서비스는 개인적인 학습 목적으로만 사용 가능하며, 상업적 목적으로의 무단 복제나 배포를 금합니다.</p>
+          <p>2. 제공되는 콘텐츠의 정확성을 기하기 위해 노력하나, 실제 시험 결과에 대한 법적 책임은 지지 않습니다.</p>
+          <p>3. 서비스 개선을 위해 기능이 예고 없이 변경될 수 있습니다.</p>
+        </div>
+
+        <div id="contact" class="tab-content">
+          <h3>문의하기 (Contact Us)</h3>
+          <p>서비스 이용 중 불편한 점이나 제안 사항이 있으시면 언제든지 아래 메일로 연락 부탁드립니다.</p>
+          <p>📧 이메일: rlatmdxo7991@gmail.com</p>
+          <p>운영 시간: 평일 10:00 ~ 18:00 (주말 및 공휴일 제외)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 하단 광고 영역 -->
+    <div class="ad-container">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-3034199051152303"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </main>
+
+  <!-- 나만의 단어장 (플로팅) -->
+  <div id='my-voca-container'>
+    <button id='voca-toggle-btn' onclick='toggleVoca()'>📒 단어 관리</button>
+    <div id='voca-content' style='display: none;'>
+      <h3>📒 나만의 단어장</h3>
+      <div class='voca-inputs'>
+        <input type='text' id='voca-word' placeholder='단어 (English)'>
+        <input type='text' id='voca-meaning' placeholder='뜻 (Korean)'>
+        <button onclick='addCustomWord()' class='btn-add-voca'>추가</button>
+      </div>
+      <ul id='voca-list'></ul>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 TOEIC VOCA Master. All rights reserved.</p>
+      <div class="footer-links">
+        <span onclick="showSection('about'); openTab(event, 'privacy-policy')">개인정보처리방침</span> | 
+        <span onclick="showSection('about'); openTab(event, 'terms')">이용약관</span> |
+        <span onclick="showSection('about'); openTab(event, 'contact')">문의하기</span> |
+        <span onclick="showSection('guide')">이용가이드</span>
+      </div>
+      <p style="margin-top: 15px; font-size: 12px; opacity: 0.6;">본 사이트는 구글 애드센스 광고 정책을 준수하며, 사용자에게 유익한 교육 콘텐츠를 제공합니다.</p>
+    </div>
+  </footer>
+
+  <script src='main.js'></script>
+</body>
+</html>
