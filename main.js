@@ -766,12 +766,20 @@ let total = 0;
 let currentQuestionNum = 0;
 let questionLimit = 10;
 let wrongWords = JSON.parse(localStorage.getItem('wrongWords')) || [];
-let scoreboard = JSON.parse(localStorage.getItem('scoreboard')) || [];
 let customVoca = JSON.parse(localStorage.getItem('customVoca')) || [];
 let userNickname = localStorage.getItem('nickname') || '';
 let review = false;
 let isVocaQuiz = false;
 let quizMode = 'en-ko';
+
+// Firebase Configuration (사용자 설정 필요)
+// 구글 Firebase 콘솔에서 프로젝트 생성 후 아래 URL을 본인의 것으로 교체하세요.
+const firebaseConfig = {
+  databaseURL: "https://toeic-voca-master-default-rtdb.firebaseio.com/" 
+};
+
+// 전역 스코어보드 변수
+let scoreboard = [];
 
 // Elements
 const wordEl = document.getElementById('word');
@@ -844,32 +852,59 @@ function showWelcome() {
   }
 }
 
-function loadScoreboard() {
-  scoreboardList.innerHTML = '';
-  if (scoreboard.length === 0) {
-    scoreboardList.innerHTML = '<p style="color:#999; text-align:center; padding: 20px;">아직 기록이 없습니다.</p>';
-    return;
+async function loadScoreboard() {
+  scoreboardList.innerHTML = '<p style="color:#999; text-align:center; padding: 20px;">랭킹 불러오는 중...</p>';
+  
+  try {
+    const response = await fetch(`${firebaseConfig.databaseURL}/scores.json?orderBy="score"&limitToLast=10`);
+    const data = await response.json();
+    
+    scoreboardList.innerHTML = '';
+    if (!data) {
+      scoreboardList.innerHTML = '<p style="color:#999; text-align:center; padding: 20px;">아직 기록이 없습니다.</p>';
+      return;
+    }
+
+    // Firebase 데이터를 배열로 변환 및 정렬
+    const scoresArray = Object.values(data);
+    scoresArray.sort((a, b) => b.score - a.score || b.rate - a.rate);
+
+    scoresArray.forEach((entry, index) => {
+      const item = document.createElement('div');
+      item.className = 'scoreboard-item';
+      item.style.display = 'flex';
+      item.style.justifyContent = 'space-between';
+      item.style.padding = '10px';
+      item.style.borderBottom = '1px solid var(--border-color)';
+      item.innerHTML = `<span><b style="color:var(--primary-color)">${index + 1}.</b> ${entry.nickname}</span> <span><b>${entry.score}/${entry.limit}</b> (${entry.rate}%)</span>`;
+      scoreboardList.appendChild(item);
+    });
+  } catch (error) {
+    console.error("Scoreboard load failed:", error);
+    scoreboardList.innerHTML = '<p style="color:#ff8787; text-align:center; padding: 20px;">랭킹을 불러오지 못했습니다.</p>';
   }
-  scoreboard.sort((a, b) => b.score - a.score || b.rate - a.rate);
-  const top10 = scoreboard.slice(0, 10);
-  top10.forEach((entry, index) => {
-    const item = document.createElement('div');
-    item.className = 'scoreboard-item';
-    item.style.display = 'flex';
-    item.style.justifyContent = 'space-between';
-    item.style.padding = '10px';
-    item.style.borderBottom = '1px solid var(--border-color)';
-    item.innerHTML = `<span>${index + 1}. ${entry.nickname}</span> <span><b>${entry.score}/${entry.limit}</b> (${entry.rate}%)</span>`;
-    scoreboardList.appendChild(item);
-  });
 }
 
-function updateScoreboard(finalScore, limit) {
+async function updateScoreboard(finalScore, limit) {
   if (!userNickname) return;
   const rate = Math.round((finalScore / limit) * 100);
-  scoreboard.push({ nickname: userNickname, score: finalScore, limit: limit, rate: rate, date: new Date().toLocaleDateString() });
-  localStorage.setItem('scoreboard', JSON.stringify(scoreboard));
-  loadScoreboard();
+  const newEntry = { 
+    nickname: userNickname, 
+    score: finalScore, 
+    limit: limit, 
+    rate: rate, 
+    date: new Date().toISOString() 
+  };
+
+  try {
+    await fetch(`${firebaseConfig.databaseURL}/scores.json`, {
+      method: 'POST',
+      body: JSON.stringify(newEntry)
+    });
+    loadScoreboard();
+  } catch (error) {
+    console.error("Scoreboard update failed:", error);
+  }
 }
 
 function setMode(mode) {
