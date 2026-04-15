@@ -67,41 +67,43 @@
       <h1>토익 필수 단어 마스터</h1>
       <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
 
-      <!-- 오늘의 단어 섹션 -->
-      <div id="wotd-container"></div>
-
-      <!-- 닉네임 등록 섹션 -->
-      <div id='auth-section' class='selector-group text-left'>
-        <span class='selector-label'>사용자 설정</span>
-        <div class='input-group'>
-          <input type='text' id='nickname-input' placeholder='닉네임 입력'>
-          <button onclick='saveNickname()' class='btn-main btn-save'>저장</button>
-        </div>
-        <p id='user-welcome' style='display: none;'></p>
-      </div>
-
-      <div class='selector-group text-left'>
-        <span class='selector-label'>학습 설정</span>
-        <div class='settings-grid'>
-          <div>
-            <span class='sub-label'>모드</span>
-            <div class='btn-group'>
-              <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
-              <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
-            </div>
-          </div>
-          <div>
-            <span class='sub-label'>문항 수</span>
-            <select id='limit-select' onchange='setLimit(parseInt(this.value))'>
-              <option value='10'>10개</option>
-              <option value='30'>30개</option>
-              <option value='50'>50개</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <button id='start-study-btn' onclick='showQuizSection()' class='btn-main btn-start' style='background: var(--primary-gradient); width: 100%; margin-bottom: 20px; font-size: 17px;'>🚀 학습 시작하기</button>
 
       <div id='quiz-section' style='display: none;'>
+        <!-- 닉네임 등록 섹션 -->
+        <div id='auth-section' class='selector-group text-left'>
+          <span class='selector-label'>사용자 설정</span>
+          <div class='input-group'>
+            <input type='text' id='nickname-input' placeholder='닉네임 입력'>
+            <button onclick='saveNickname()' class='btn-main btn-save'>저장</button>
+          </div>
+          <p id='user-welcome' style='display: none;'></p>
+        </div>
+
+        <div class='selector-group text-left'>
+          <span class='selector-label'>학습 설정</span>
+          <div class='settings-grid'>
+            <div>
+              <span class='sub-label'>모드</span>
+              <div class='btn-group'>
+                <button id='mode-en-ko' class='active' onclick='setMode("en-ko")'>ENG ➡️ KOR</button>
+                <button id='mode-ko-en' onclick='setMode("ko-en")'>KOR ➡️ ENG</button>
+              </div>
+            </div>
+            <div>
+              <span class='sub-label'>문항 수</span>
+              <select id='limit-select' onchange='setLimit(parseInt(this.value))'>
+                <option value='10'>10개</option>
+                <option value='30'>30개</option>
+                <option value='50'>50개</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 오늘의 단어 섹션 -->
+        <div id="wotd-container"></div>
+
         <div id='word-display'>
           <div id='word'>준비되셨나요?</div>
           <button id='speak-btn' onclick='speakWord()' style='visibility: hidden;'>🔊 발음 듣기</button>
@@ -130,8 +132,6 @@
           <button id='voca-quiz-btn' onclick='vocaQuizMode()' class='btn-main btn-voca-quiz'>나만의 퀴즈</button>
         </div>
       </div>
-
-      <button id='start-study-btn' onclick='showQuizSection()' class='btn-main btn-start' style='background: var(--primary-gradient); width: 100%; margin-bottom: 12px; font-size: 17px;'>🚀 학습 시작하기</button>
 
       <!-- 스코어보드 섹션 -->
       <div id='scoreboard-container' style='display: none;'>
