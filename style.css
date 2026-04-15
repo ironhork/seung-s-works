@@ -120,7 +120,12 @@ h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
 }
 
 .btn-main:hover, #next-btn:hover, .btn-add-voca:hover { transform: translateY(-2px); filter: brightness(1.05); }
-.btn-main:active, #next-btn:active, .btn-add-voca:active { transform: translateY(0); filter: brightness(1) !important; } /* 클릭 시 색 변화 방지 */
+.btn-main:active, #next-btn:active, .btn-add-voca:active, .tab-btn:active, .choice:active, #voca-toggle-btn:active, .delete-voca-btn:active { 
+  transform: translateY(0) !important; 
+  filter: brightness(1) !important; 
+  box-shadow: var(--btn-shadow) !important;
+  background-image: var(--primary-gradient) !important;
+}
 
 /* Primary Action Buttons */
 .btn-start { background: var(--primary-gradient); color: white; width: 100%; margin-bottom: 12px; font-size: 17px; }
