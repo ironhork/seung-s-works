@@ -1128,6 +1128,11 @@ function showWordOfTheDay() {
   }
 }
 
+function showQuizSection() {
+  document.getElementById('quiz-section').style.display = 'block';
+  document.getElementById('start-study-btn').style.display = 'none';
+}
+
 // 초기화
 (function() {
   const savedTheme = localStorage.getItem('theme');
