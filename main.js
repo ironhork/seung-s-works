@@ -845,15 +845,20 @@ function showWelcome() {
   if (userNickname) {
     if (nicknameInput && nicknameInput.parentElement) {
       nicknameInput.parentElement.style.display = 'none';
-      document.querySelector('#auth-section .selector-label').style.display = 'none';
+      const authLabel = document.querySelector('#auth-section .selector-label');
+      if (authLabel) authLabel.style.display = 'none';
     }
-    userWelcome.innerText = `반갑습니다, ${userNickname}님! 👋`;
-    userWelcome.style.display = 'block';
+    if (userWelcome) {
+      userWelcome.innerText = `반갑습니다, ${userNickname}님! 👋`;
+      userWelcome.style.display = 'block';
+    }
   }
 }
 
 async function loadScoreboard() {
+  if (!scoreboardList) return;
   scoreboardList.innerHTML = '<p style="color:#999; text-align:center; padding: 20px;">랭킹 불러오는 중...</p>';
+  
   
   try {
     const response = await fetch(`${firebaseConfig.databaseURL}/scores.json?orderBy="score"&limitToLast=10`);
@@ -909,31 +914,34 @@ async function updateScoreboard(finalScore, limit) {
 
 function setMode(mode) {
   quizMode = mode;
-  document.getElementById('mode-en-ko').classList.toggle('active', mode === 'en-ko');
-  document.getElementById('mode-ko-en').classList.toggle('active', mode === 'ko-en');
-  speakBtn.style.visibility = (mode === 'en-ko') ? 'visible' : 'hidden';
+  const modeEnKo = document.getElementById('mode-en-ko');
+  const modeKoEn = document.getElementById('mode-ko-en');
+  if (modeEnKo) modeEnKo.classList.toggle('active', mode === 'en-ko');
+  if (modeKoEn) modeKoEn.classList.toggle('active', mode === 'ko-en');
+  if (speakBtn) speakBtn.style.visibility = (mode === 'en-ko') ? 'visible' : 'hidden';
 }
 
 function setLimit(limit) { questionLimit = limit; }
 
 function startQuiz() {
   review = false; isVocaQuiz = false; score = 0; total = 0; currentQuestionNum = 0;
-  scoreboardContainer.style.display = 'none';
-  document.getElementById('score-board').style.display = 'block';
+  if (scoreboardContainer) scoreboardContainer.style.display = 'none';
+  const scoreBoard = document.getElementById('score-board');
+  if (scoreBoard) scoreBoard.style.display = 'block';
   nextQuestion();
 }
 
 function reviewMode() {
   if (wrongWords.length === 0) { alert('복습할 단어가 없습니다'); return; }
   review = true; isVocaQuiz = false; score = 0; total = 0; currentQuestionNum = 0;
-  scoreboardContainer.style.display = 'none';
+  if (scoreboardContainer) scoreboardContainer.style.display = 'none';
   nextQuestion();
 }
 
 function vocaQuizMode() {
   if (customVoca.length < 4) { alert('나만의 단어장에 최소 4개 이상의 단어가 필요합니다!'); return; }
   review = false; isVocaQuiz = true; score = 0; total = 0; currentQuestionNum = 0;
-  scoreboardContainer.style.display = 'none';
+  if (scoreboardContainer) scoreboardContainer.style.display = 'none';
   nextQuestion();
 }
 
@@ -942,14 +950,16 @@ function nextQuestion() {
   let limit = isVocaQuiz ? Math.min(customVoca.length, questionLimit) : (review ? wrongWords.length : questionLimit);
 
   if (currentQuestionNum >= limit) { showSummary(); return; }
-  resultEl.innerText = ''; exampleBox.style.display = 'none'; nextBtn.style.display = 'none';
+  if (resultEl) resultEl.innerText = ''; 
+  if (exampleBox) exampleBox.style.display = 'none'; 
+  if (nextBtn) nextBtn.style.display = 'none';
   
   let randomIndex = Math.floor(Math.random() * source.length);
   activeWord = source[randomIndex];
 
   let questionText = (quizMode === 'en-ko') ? activeWord.word : activeWord.meaning;
   let correctValue = (quizMode === 'en-ko') ? activeWord.meaning : activeWord.word;
-  wordEl.innerText = questionText;
+  if (wordEl) wordEl.innerText = questionText;
 
   let options = [correctValue];
   let allPossibleWords = [...words, ...customVoca];
@@ -960,19 +970,21 @@ function nextQuestion() {
   }
   options.sort(() => Math.random() - 0.5);
 
-  choicesEl.innerHTML = '';
-  options.forEach(option => {
-    const btn = document.createElement('button');
-    btn.className = 'choice';
-    btn.innerText = option;
-    btn.onclick = () => checkAnswer(option);
-    choicesEl.appendChild(btn);
-  });
-  speakBtn.style.visibility = (quizMode === 'en-ko') ? 'visible' : 'hidden';
+  if (choicesEl) {
+    choicesEl.innerHTML = '';
+    options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerText = option;
+      btn.onclick = () => checkAnswer(option);
+      choicesEl.appendChild(btn);
+    });
+  }
+  if (speakBtn) speakBtn.style.visibility = (quizMode === 'en-ko') ? 'visible' : 'hidden';
 }
 
 function checkAnswer(answer) {
-  if (nextBtn.style.display === 'block') return;
+  if (nextBtn && nextBtn.style.display === 'block') return;
   let correctValue = (quizMode === 'en-ko') ? activeWord.meaning : activeWord.word;
   total++; currentQuestionNum++;
 
@@ -984,11 +996,15 @@ function checkAnswer(answer) {
 
   if (answer === correctValue) {
     score++;
-    resultEl.innerText = '✅ 정답입니다!';
-    resultEl.style.color = 'var(--success-color)';
+    if (resultEl) {
+      resultEl.innerText = '✅ 정답입니다!';
+      resultEl.style.color = 'var(--success-color)';
+    }
   } else {
-    resultEl.innerText = '❌ 오답 (정답: ' + correctValue + ')';
-    resultEl.style.color = 'var(--danger-color)';
+    if (resultEl) {
+      resultEl.innerText = '❌ 오답 (정답: ' + correctValue + ')';
+      resultEl.style.color = 'var(--danger-color)';
+    }
     if (!wrongWords.find(w => w.word === activeWord.word)) {
       wrongWords.push(activeWord);
       localStorage.setItem('wrongWords', JSON.stringify(wrongWords));
@@ -996,23 +1012,26 @@ function checkAnswer(answer) {
   }
 
   if (activeWord.ex_en && activeWord.ex_ko) {
-    exampleEn.innerHTML = activeWord.ex_en.replace(new RegExp(activeWord.word, 'gi'), '<b>$&</b>');
-    exampleKo.innerText = activeWord.ex_ko;
-    exampleBox.style.display = 'block';
+    if (exampleEn) exampleEn.innerHTML = activeWord.ex_en.replace(new RegExp(activeWord.word, 'gi'), '<b>$&</b>');
+    if (exampleKo) exampleKo.innerText = activeWord.ex_ko;
+    if (exampleBox) exampleBox.style.display = 'block';
   }
 
-  nextBtn.style.display = 'block';
+  if (nextBtn) nextBtn.style.display = 'block';
   let limit = isVocaQuiz ? Math.min(customVoca.length, questionLimit) : (review ? wrongWords.length : questionLimit);
-  scoreEl.innerText = `진행: ${currentQuestionNum}/${limit} | 점수: ${score}`;
+  if (scoreEl) scoreEl.innerText = `진행: ${currentQuestionNum}/${limit} | 점수: ${score}`;
 }
 
 function showSummary() {
   let limit = isVocaQuiz ? Math.min(customVoca.length, questionLimit) : (review ? wrongWords.length : questionLimit);
-  wordEl.innerText = '학습 완료! 🎉';
-  choicesEl.innerHTML = `<h3>최종 점수: ${score} / ${limit}</h3><p>정답률: ${Math.round((score / limit) * 100)}%</p>`;
-  resultEl.innerText = ''; exampleBox.style.display = 'none'; nextBtn.style.display = 'none';
-  document.getElementById('score-board').style.display = 'none';
-  scoreboardContainer.style.display = 'block';
+  if (wordEl) wordEl.innerText = '학습 완료! 🎉';
+  if (choicesEl) choicesEl.innerHTML = `<h3>최종 점수: ${score} / ${limit}</h3><p>정답률: ${Math.round((score / limit) * 100)}%</p>`;
+  if (resultEl) resultEl.innerText = ''; 
+  if (exampleBox) exampleBox.style.display = 'none'; 
+  if (nextBtn) nextBtn.style.display = 'none';
+  const scoreBoard = document.getElementById('score-board');
+  if (scoreBoard) scoreBoard.style.display = 'none';
+  if (scoreboardContainer) scoreboardContainer.style.display = 'block';
   if (!review && !isVocaQuiz) updateScoreboard(score, questionLimit);
 }
 
@@ -1031,11 +1050,14 @@ function speakExample() {
 }
 
 function toggleVoca() {
-  const isNone = vocaContent.style.display === 'none';
-  vocaContent.style.display = isNone ? 'flex' : 'none';
+  if (vocaContent) {
+    const isNone = vocaContent.style.display === 'none';
+    vocaContent.style.display = isNone ? 'flex' : 'none';
+  }
 }
 
 function renderVoca() {
+  if (!vocaList) return;
   vocaList.innerHTML = '';
   // 알파벳 순으로 정렬 (원본 배열 보존을 위해 복사본 사용 추천하나 현재는 직접 정렬)
   customVoca.sort((a, b) => a.word.toLowerCase().localeCompare(b.word.toLowerCase()));
@@ -1054,6 +1076,7 @@ function renderVoca() {
 }
 
 function addCustomWord() {
+  if (!vocaWordInput || !vocaMeaningInput) return;
   const word = vocaWordInput.value.trim();
   const meaning = vocaMeaningInput.value.trim();
   if (!word || !meaning) { alert('단어와 뜻을 모두 입력해주세요!'); return; }
@@ -1082,15 +1105,18 @@ function showWordOfTheDay() {
   let wotd;
 
   if (savedDate === today) {
-    wotd = JSON.parse(localStorage.getItem('wotd'));
-  } else {
+    const savedWotd = localStorage.getItem('wotd');
+    if (savedWotd) wotd = JSON.parse(savedWotd);
+  } 
+  
+  if (!wotd) {
     wotd = words[Math.floor(Math.random() * words.length)];
     localStorage.setItem('wotd', JSON.stringify(wotd));
     localStorage.setItem('wotdDate', today);
   }
 
   const container = document.getElementById('wotd-container');
-  if (container) {
+  if (container && wotd) {
     container.innerHTML = `
       <div class="wotd-card">
         <div class="wotd-tag">오늘의 추천 단어</div>
@@ -1106,7 +1132,10 @@ function showWordOfTheDay() {
 (function() {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') document.body.classList.add('dark-mode');
-  showWelcome(); loadScoreboard(); renderVoca(); showWordOfTheDay();
+  showWelcome(); 
+  loadScoreboard(); 
+  renderVoca(); 
+  showWordOfTheDay();
 })();
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
