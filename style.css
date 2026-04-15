@@ -32,17 +32,10 @@ body.dark-mode {
 }
 
 body.dark-mode .nav-menu li {
-  background: var(--secondary-color);
-  border-color: var(--border-color);
-  color: var(--text-muted);
-}
-body.dark-mode .nav-menu li:hover {
-  background: var(--card-bg);
-  color: var(--primary-color);
-  border-color: var(--primary-color);
+  background: var(--primary-gradient);
 }
 body.dark-mode .nav-menu li a {
-  color: inherit;
+  color: white;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -81,21 +74,23 @@ header {
 
 .nav-menu { display: flex; list-style: none; gap: 8px; }
 .nav-menu li {
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  color: var(--text-muted);
   transition: var(--transition);
-  background: var(--secondary-color);
-  border: 1px solid var(--border-color);
+  background: var(--primary-gradient);
+  border: none;
+  box-shadow: var(--btn-shadow);
+}
+.nav-menu li a {
+  color: white;
+  text-decoration: none;
 }
 .nav-menu li:hover {
-  background: var(--card-bg);
-  color: var(--primary-color);
-  border-color: var(--primary-color);
   transform: translateY(-2px);
+  filter: brightness(1.05);
 }
 
 #theme-btn {
