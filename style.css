@@ -116,9 +116,11 @@ h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
   justify-content: center;
   gap: 8px;
   box-shadow: var(--btn-shadow);
+  color: white; /* 기본 버튼 글자색을 흰색으로 설정 */
 }
 
 .btn-main:hover, #next-btn:hover, .btn-add-voca:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.btn-main:active, #next-btn:active, .btn-add-voca:active { transform: translateY(0); filter: brightness(1); } /* 클릭 시 색 변화 방지 */
 
 /* Primary Action Buttons */
 .btn-start { background: var(--primary-gradient); color: white; width: 100%; margin-bottom: 12px; font-size: 17px; }
