@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>How to Use the TOEIC Quiz - TOEIC VOCA Master</title>
+  <meta name="description" content="TOEIC VOCA Master의 퀴즈 기능을 100% 활용하는 방법을 알아보세요.">
+  <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+  <!-- 상단 내비게이션 -->
+  <header>
+    <nav class="nav-container">
+      <div class="logo" onclick="location.href='index.html'">📚 VOCA Master</div>
+      <ul class="nav-menu">
+        <li><a href="index.html">학습하기</a></li>
+        <li><a href="toeic-vocabulary-1000.html">필수단어</a></li>
+        <li><a href="toeic-study-tips.html">학습칼럼</a></li>
+        <li><a href="about.html">소개</a></li>
+        <li><a href="privacy.html">개인정보</a></li>
+      </ul>
+      <button id='theme-btn' onclick='toggleTheme()'>🌙</button>
+    </nav>
+  </header>
+
+  <main class='container'>
+    <section class="text-left content-page">
+      <h2 class="section-title">📝 How to Use the TOEIC Vocabulary Quiz</h2>
+      <p style="margin-bottom: 25px;">This quiz helps learners practice TOEIC vocabulary through interactive questions. Understanding the features will help you study more effectively.</p>
+      
+      <div class="article-card">
+        <h3>Basic Quiz Usage</h3>
+        <p>Select your preferred mode (ENG to KOR or KOR to ENG) and the number of questions. Click <b>'학습 시작'</b> to begin your session.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>Review and Custom Lists</h3>
+        <p>Use the <b>'틀린 단어 복습'</b> feature to focus on words you missed. You can also create your own vocabulary list using the <b>'나만의 단어장'</b> feature for personalized study.</p>
+      </div>
+
+      <div class="article-card" style="margin-top: 30px; text-align: center; background: var(--secondary-color);">
+        <p>지금 바로 학습을 시작해보세요!</p>
+        <button onclick="location.href='index.html'" class="btn-main btn-start" style="display: inline-block; width: auto; margin-top: 15px;">퀴즈 시작하기 ➡️</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 TOEIC VOCA Master. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy.html">개인정보처리방침</a> | 
+        <a href="about.html">이용약관</a> |
+        <a href="contact.html">문의하기</a> |
+        <a href="toeic-study-tips.html">학습가이드</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src='main.js'></script>
+</body>
+</html>

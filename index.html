@@ -35,28 +35,56 @@
   </script>
 </head>
 <body>
-  <nav style="padding:20px; background:#f2f2f2;">
-    <a href="/">Home</a> |
-    <a href="/toeic-study-tips.html">Study Tips</a> |
-    <a href="/about.html">About</a> |
-    <a href="/privacy.html">Privacy Policy</a> |
-    <a href="/contact.html">Contact</a>
-    </nav>
   <!-- 상단 내비게이션 -->
   <header>
     <nav class="nav-container">
-      <div class="logo" onclick="location.href='/'">📚 VOCA Master</div>
+      <div class="logo" onclick="location.href='index.html'">📚 VOCA Master</div>
       <ul class="nav-menu">
-        <li><a href="/">학습하기</a></li>
-        <li><a href="/toeic-study-tips.html">학습칼럼</a></li>
-        <li><a href="/about.html">소개</a></li>
-        <li><a href="/privacy.html">개인정보</a></li>
+        <li><a href="index.html">학습하기</a></li>
+        <li><a href="toeic-vocabulary-1000.html">필수단어</a></li>
+        <li><a href="toeic-study-tips.html">학습칼럼</a></li>
+        <li><a href="about.html">소개</a></li>
+        <li><a href="privacy.html">개인정보</a></li>
       </ul>
       <button id='theme-btn' onclick='toggleTheme()'>🌙</button>
     </nav>
   </header>
 
   <main class='container'>
+    <section style="max-width:900px; margin:auto; padding:30px; line-height:1.7;">
+      <h1>TOEIC Vocabulary Learning Guide</h1>
+      
+      <p>
+      Learning TOEIC vocabulary effectively is one of the most important steps in improving your TOEIC score.
+      This website provides structured vocabulary lists, quizzes, and study guides to help learners master
+      essential TOEIC words.
+      </p>
+      
+      <h2>How to Study TOEIC Vocabulary</h2>
+      
+      <p>
+      The best way to learn TOEIC vocabulary is through repeated exposure and active recall.
+      Using vocabulary quizzes and daily study plans can significantly improve long-term memory retention.
+      </p>
+      
+      <h2>Why Vocabulary Matters for TOEIC</h2>
+      
+      <p>
+      The TOEIC exam tests real-world English used in workplaces, emails, meetings, and business situations.
+      Building a strong vocabulary foundation helps learners quickly understand reading passages
+      and listening sections.
+      </p>
+      
+      <h2>Features of This Website</h2>
+      
+      <ul>
+      <li><a href="toeic-vocabulary-1000.html">1000 essential TOEIC vocabulary words</a></li>
+      <li><a href="index.html">Interactive vocabulary quizzes</a></li>
+      <li><a href="toeic-study-plan.html">Daily study plans</a></li>
+      <li><a href="toeic-exam-tips.html">TOEIC exam preparation tips</a></li>
+      </ul>
+      
+      </section>
     
     <!-- 메인 퀴즈 섹션 -->
     <section id="home-section">
@@ -133,10 +161,13 @@
     </section>
 
     <!-- 학습 가이드 요약 섹션 (애드센스 대응용) -->
-    <section id="guide-summary" class="text-left content-page" style="margin-top: 30px;">
+    <section id="guide-section" class="text-left content-page" style="margin-top: 30px;">
       <h2 class="section-title">💡 효율적인 학습 방법</h2>
       <p>VOCA Master는 에빙하우스의 망각 곡선 이론을 바탕으로 설계되었습니다. 틀린 단어를 즉시 복습하고, 예문을 통해 문맥 속에서 단어를 이해하는 것이 고득점의 비결입니다. 더 자세한 학습 전략은 <a href="toeic-study-tips.html" style="color: var(--primary-color); font-weight: 700;">학습칼럼</a>에서 확인하세요.</p>
     </section>
+
+    <!-- 블로그/칼럼 섹션 (향후 확장용) -->
+    <section id="articles-section" style="display: none;"></section>
 
     <!-- 소개 섹션 -->
     <section id="about-section" style="display: none;" class="text-left content-page">
