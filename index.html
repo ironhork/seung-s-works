@@ -39,6 +39,7 @@
   <header>
     <nav class="nav-container">
       <div class="logo" onclick="location.href='index.html'">📚 VOCA Master</div>
+      <button onclick='showQuizSection()' class='btn-main' style='background: var(--primary-gradient); padding: 10px 20px; font-size: 14px;'>🚀 학습하기</button>
       <ul class="nav-menu">
         <li><a href="index.html">학습하기</a></li>
         <li><a href="toeic-vocabulary-1000.html">필수단어</a></li>
@@ -50,26 +51,13 @@
     </nav>
   </header>
 
-  <main class='container'>
-    <!-- 학습 리소스 퀵 메뉴 -->
-    <section class="resource-nav" style="max-width:900px; margin: 20px auto; padding: 20px; text-align: center; background: var(--card-bg); border-radius: 15px; box-shadow: var(--card-shadow);">
-      <h2 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--text-primary);">🚀 빠른 학습 리소스</h2>
-      <div class="resource-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-        <button onclick="location.href='toeic-learning-guide.html'" class="btn-main" style="background: var(--primary-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">📘 학습 가이드</button>
-        <button onclick="location.href='toeic-vocabulary-1000.html'" class="btn-main" style="background: var(--voca-quiz-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">📒 필수 단어장</button>
-        <button onclick="location.href='toeic-study-tips.html'" class="btn-main" style="background: var(--success-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">💡 고득점 비결</button>
-        <button onclick="location.href='toeic-study-plan.html'" class="btn-main" style="background: var(--danger-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">📅 30일 플랜</button>
-      </div>
-    </section>
-    
-    <!-- 메인 퀴즈 섹션 -->
-    <section id="home-section">
-      <h1>토익 필수 단어 마스터</h1>
-      <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
+  <!-- 퀴즈 섹션 (오버레이) -->
+  <div id='quiz-overlay' style='display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 200; overflow-y: auto;'>
+    <div class='container'>
+      <section id='home-section'>
+        <h1>토익 필수 단어 마스터</h1>
+        <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
 
-      <button id='start-study-btn' onclick='showQuizSection()' class='btn-main btn-start' style='background: var(--primary-gradient); width: 100%; margin-bottom: 20px; font-size: 17px;'>🚀 학습 시작하기</button>
-
-      <div id='quiz-section' style='display: none;'>
         <!-- 닉네임 등록 섹션 -->
         <div id='auth-section' class='selector-group text-left'>
           <span class='selector-label'>사용자 설정</span>
@@ -131,13 +119,39 @@
           <button id='review-btn' onclick='reviewMode()' class='btn-main btn-review'>틀린 단어 복습</button>
           <button id='voca-quiz-btn' onclick='vocaQuizMode()' class='btn-main btn-voca-quiz'>나만의 퀴즈</button>
         </div>
-      </div>
 
-      <!-- 스코어보드 섹션 -->
-      <div id='scoreboard-container' style='display: none;'>
-        <h2 class="section-title">🏆 명예의 전당 (Top 10)</h2>
-        <div id='scoreboard-list'></div>
+        <!-- 스코어보드 섹션 -->
+        <div id='scoreboard-container' style='display: none;'>
+          <h2 class="section-title">🏆 명예의 전당 (Top 10)</h2>
+          <div id='scoreboard-list'></div>
+        </div>
+
+        <button onclick='closeQuizSection()' class='btn-main' style='background: var(--secondary-color); color: var(--text-primary); width: 100%; margin-top: 20px;'>← 기본 화면으로</button>
+      </section>
+    </div>
+  </div>
+
+  <main class='container'>
+    <!-- 학습 리소스 퀵 메뉴 -->
+    <section class="resource-nav" style="max-width:900px; margin: 20px auto; padding: 20px; text-align: center; background: var(--card-bg); border-radius: 15px; box-shadow: var(--card-shadow);">
+      <h2 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--text-primary);">🚀 빠른 학습 리소스</h2>
+      <div class="resource-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+        <button onclick="location.href='toeic-learning-guide.html'" class="btn-main" style="background: var(--primary-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">📘 학습 가이드</button>
+        <button onclick="location.href='toeic-vocabulary-1000.html'" class="btn-main" style="background: var(--voca-quiz-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">📒 필수 단어장</button>
+        <button onclick="location.href='toeic-study-tips.html'" class="btn-main" style="background: var(--success-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">💡 고득점 비결</button>
+        <button onclick="location.href='toeic-study-plan.html'" class="btn-main" style="background: var(--danger-gradient); font-size: 0.9rem; padding: 12px; color: white !important;">📅 30일 플랜</button>
       </div>
+    </section>
+    
+    <!-- 토익 필수 단어 마스터 -->
+    <section id="home-section">
+      <h1>토익 필수 단어 마스터</h1>
+      <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
+    </section>
+
+    <!-- 오늘의 추천 단어 -->
+    <section id="wotd-section" class="text-left" style="margin-top: 20px;">
+      <div id="wotd-container"></div>
     </section>
 
     <!-- 학습 가이드 요약 섹션 (애드센스 대응용) -->

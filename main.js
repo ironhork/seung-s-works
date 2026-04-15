@@ -1129,8 +1129,13 @@ function showWordOfTheDay() {
 }
 
 function showQuizSection() {
-  document.getElementById('quiz-section').style.display = 'block';
-  document.getElementById('start-study-btn').style.display = 'none';
+  document.getElementById('quiz-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuizSection() {
+  document.getElementById('quiz-overlay').style.display = 'none';
+  document.body.style.overflow = 'auto';
 }
 
 // 초기화
