@@ -1037,17 +1037,17 @@ function toggleVoca() {
 
 function renderVoca() {
   vocaList.innerHTML = '';
-  // 알파벳 순으로 정렬
+  // 알파벳 순으로 정렬 (원본 배열 보존을 위해 복사본 사용 추천하나 현재는 직접 정렬)
   customVoca.sort((a, b) => a.word.toLowerCase().localeCompare(b.word.toLowerCase()));
-  
-  customVoca.forEach((item, index) => {
+
+  customVoca.forEach((item) => {
     const li = document.createElement('li');
     li.innerHTML = `
       <div class="voca-item-info">
         <span class="voca-word-text">${item.word}</span>
         <span class="voca-meaning-text">${item.meaning}</span>
       </div>
-      <button class="delete-voca-btn" onclick="deleteCustomWord(${index})" title="삭제">×</button>
+      <button class="delete-voca-btn" onclick="deleteCustomWord('${item.word.replace(/'/g, "\\'")}')" title="삭제">×</button>
     `;
     vocaList.appendChild(li);
   });
@@ -1057,7 +1057,7 @@ function addCustomWord() {
   const word = vocaWordInput.value.trim();
   const meaning = vocaMeaningInput.value.trim();
   if (!word || !meaning) { alert('단어와 뜻을 모두 입력해주세요!'); return; }
-  
+
   // 중복 체크
   if (customVoca.find(v => v.word.toLowerCase() === word.toLowerCase())) {
     alert('이미 등록된 단어입니다!');
@@ -1070,19 +1070,44 @@ function addCustomWord() {
   renderVoca();
 }
 
-function deleteCustomWord(index) {
-  customVoca.splice(index, 1);
+function deleteCustomWord(word) {
+  customVoca = customVoca.filter(v => v.word !== word);
   localStorage.setItem('customVoca', JSON.stringify(customVoca));
   renderVoca();
+}
+
+function showWordOfTheDay() {
+  const today = new Date().toDateString();
+  const savedDate = localStorage.getItem('wotdDate');
+  let wotd;
+
+  if (savedDate === today) {
+    wotd = JSON.parse(localStorage.getItem('wotd'));
+  } else {
+    wotd = words[Math.floor(Math.random() * words.length)];
+    localStorage.setItem('wotd', JSON.stringify(wotd));
+    localStorage.setItem('wotdDate', today);
+  }
+
+  const container = document.getElementById('wotd-container');
+  if (container) {
+    container.innerHTML = `
+      <div class="wotd-card">
+        <div class="wotd-tag">오늘의 추천 단어</div>
+        <div class="wotd-word">${wotd.word}</div>
+        <div class="wotd-meaning">${wotd.meaning}</div>
+        <div class="wotd-ex">${wotd.ex_en}</div>
+      </div>
+    `;
+  }
 }
 
 // 초기화
 (function() {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') document.body.classList.add('dark-mode');
-  showWelcome(); loadScoreboard(); renderVoca();
+  showWelcome(); loadScoreboard(); renderVoca(); showWordOfTheDay();
 })();
-
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
 });
