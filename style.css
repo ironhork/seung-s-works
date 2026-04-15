@@ -278,6 +278,32 @@ h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
 /* Ad Container */
 .ad-container { margin-top: 40px; padding: 20px; background: var(--secondary-color); border-radius: 16px; min-height: 100px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border-color); }
 
+/* Word of the Day Card */
+#wotd-container { margin-bottom: 30px; }
+.wotd-card {
+  background: var(--card-bg);
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  padding: 25px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+.wotd-tag {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.wotd-word { font-size: 32px; font-weight: 800; color: var(--primary-color); margin-bottom: 5px; }
+.wotd-meaning { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+.wotd-ex { font-size: 14px; color: var(--text-muted); font-style: italic; border-top: 1px solid var(--border-color); padding-top: 10px; }
+
 /* Voca List Styles */
 #voca-list { list-style: none; margin-top: 15px; overflow-y: auto; flex: 1; padding-right: 5px; }
 #voca-list li { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--secondary-color); border-radius: 10px; margin-bottom: 6px; border: 1px solid var(--border-color); }
