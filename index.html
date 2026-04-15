@@ -51,40 +51,16 @@
   </header>
 
   <main class='container'>
-    <section style="max-width:900px; margin:auto; padding:30px; line-height:1.7;">
-      <h1>TOEIC Vocabulary Learning Guide</h1>
-      
-      <p>
-      Learning TOEIC vocabulary effectively is one of the most important steps in improving your TOEIC score.
-      This website provides structured vocabulary lists, quizzes, and study guides to help learners master
-      essential TOEIC words.
-      </p>
-      
-      <h2>How to Study TOEIC Vocabulary</h2>
-      
-      <p>
-      The best way to learn TOEIC vocabulary is through repeated exposure and active recall.
-      Using vocabulary quizzes and daily study plans can significantly improve long-term memory retention.
-      </p>
-      
-      <h2>Why Vocabulary Matters for TOEIC</h2>
-      
-      <p>
-      The TOEIC exam tests real-world English used in workplaces, emails, meetings, and business situations.
-      Building a strong vocabulary foundation helps learners quickly understand reading passages
-      and listening sections.
-      </p>
-      
-      <h2>Features of This Website</h2>
-      
-      <ul>
-      <li><a href="toeic-vocabulary-1000.html">1000 essential TOEIC vocabulary words</a></li>
-      <li><a href="index.html">Interactive vocabulary quizzes</a></li>
-      <li><a href="toeic-study-plan.html">Daily study plans</a></li>
-      <li><a href="toeic-exam-tips.html">TOEIC exam preparation tips</a></li>
-      </ul>
-      
-      </section>
+    <!-- 학습 리소스 퀵 메뉴 -->
+    <section class="resource-nav" style="max-width:900px; margin: 20px auto; padding: 20px; text-align: center; background: var(--card-bg); border-radius: 15px; box-shadow: var(--card-shadow);">
+      <h2 style="margin-bottom: 20px; font-size: 1.2rem; color: var(--text-primary);">🚀 빠른 학습 리소스</h2>
+      <div class="resource-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+        <button onclick="location.href='toeic-learning-guide.html'" class="btn-main" style="background: var(--primary-gradient); font-size: 0.9rem; padding: 12px;">📘 학습 가이드</button>
+        <button onclick="location.href='toeic-vocabulary-1000.html'" class="btn-main" style="background: var(--voca-quiz-gradient); font-size: 0.9rem; padding: 12px;">📒 필수 단어장</button>
+        <button onclick="location.href='toeic-study-tips.html'" class="btn-main" style="background: var(--success-gradient); font-size: 0.9rem; padding: 12px;">💡 고득점 비결</button>
+        <button onclick="location.href='toeic-study-plan.html'" class="btn-main" style="background: var(--danger-gradient); font-size: 0.9rem; padding: 12px;">📅 30일 플랜</button>
+      </div>
+    </section>
     
     <!-- 메인 퀴즈 섹션 -->
     <section id="home-section">
