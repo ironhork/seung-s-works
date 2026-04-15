@@ -830,7 +830,11 @@ function toggleTheme() {
   document.body.classList.toggle('dark-mode');
   const isDark = document.body.classList.contains('dark-mode');
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  document.getElementById('theme-btn').innerText = isDark ? '☀️' : '🌙';
+  const themeIcon = isDark ? '☀️' : '🌙';
+  const themeBtn = document.getElementById('theme-btn');
+  const themeBtn2 = document.getElementById('theme-btn2');
+  if (themeBtn) themeBtn.innerText = themeIcon;
+  if (themeBtn2) themeBtn2.innerText = themeIcon;
 }
 
 function saveNickname() {
