@@ -775,7 +775,7 @@ let quizMode = 'en-ko';
 // Firebase Configuration (사용자 설정 필요)
 // 구글 Firebase 콘솔에서 프로젝트 생성 후 아래 URL을 본인의 것으로 교체하세요.
 const firebaseConfig = {
-  databaseURL: "https://toeic-voca-master-default-rtdb.firebaseio.com/" 
+  databaseURL: "https://toeic-voca-master-default-rtdb.firebaseio.com/"
 };
 
 // 전역 스코어보드 변수
