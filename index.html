@@ -66,7 +66,79 @@
     <section id="quiz-section">
       <h1>토익 필수 단어 마스터</h1>
       <p class="site-intro">과학적인 퀴즈 방식을 통해 토익 핵심 어휘를 가장 빠르게 암기하세요.</p>
+      
+      <!-- 닉네임 설정 섹션 -->
+      <div id="auth-section" style="margin-bottom: 30px;">
+        <div id="user-welcome" style="display: none; font-size: 1.2rem; font-weight: 800; color: var(--primary-color); margin-bottom: 15px;"></div>
+        <div class="article-card" style="padding: 20px;">
+          <p class="selector-label" style="margin-bottom: 10px; font-weight: 700;">닉네임을 입력하고 랭킹에 도전하세요!</p>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="nickname-input" placeholder="닉네임 입력" style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); outline: none;">
+            <button onclick="saveNickname()" class="btn-main" style="background: var(--primary-gradient); padding: 10px 20px; font-size: 14px; white-space: nowrap;">저장</button>
+          </div>
+        </div>
+      </div>
+
       <div id="wotd-container"></div>
+
+      <!-- 퀴즈 설정 -->
+      <div id="quiz-setup" class="article-card" style="margin-bottom: 30px;">
+        <div style="margin-bottom: 20px;">
+          <p class="selector-label" style="margin-bottom: 8px; font-weight: 700; text-align: left;">🎯 학습 모드 선택</p>
+          <div class="btn-group">
+            <button id="mode-en-ko" class="active" onclick="setMode('en-ko')">영 ➔ 한</button>
+            <button id="mode-ko-en" onclick="setMode('ko-en')">한 ➔ 영</button>
+          </div>
+        </div>
+        
+        <div style="margin-bottom: 25px;">
+          <p class="selector-label" style="margin-bottom: 8px; font-weight: 700; text-align: left;">🔢 문항 수 선택</p>
+          <select id="limit-select" onchange="setLimit(this.value)">
+            <option value="10">10문항</option>
+            <option value="20">20문항</option>
+            <option value="30">30문항</option>
+            <option value="50">50문항</option>
+          </select>
+        </div>
+
+        <button onclick="startQuiz()" class="btn-main btn-start">🚀 학습 시작</button>
+        <div class="action-btns">
+          <button onclick="reviewMode()" class="btn-main btn-review">🔄 틀린 단어 복습</button>
+          <button onclick="vocaQuizMode()" class="btn-main btn-voca-quiz">📒 나만의 단어 퀴즈</button>
+        </div>
+      </div>
+
+      <!-- 퀴즈 진행 화면 -->
+      <div id="score-board" style="display: none; margin-bottom: 20px;">
+        <div id="score" style="font-weight: 800; color: var(--text-muted);">진행: 0/10 | 점수: 0</div>
+      </div>
+
+      <div id="quiz-container" style="min-height: 300px;">
+        <div id="word"></div>
+        <button id="speak-btn" onclick="speakWord()" style="visibility: hidden;">🔊 발음 듣기</button>
+        <div id="choices" class="choices-grid"></div>
+        <div id="result" style="font-size: 1.2rem; font-weight: 800; margin: 15px 0;"></div>
+        
+        <div id="example-box" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <b style="color: var(--primary-color);">💡 예문 학습</b>
+            <button class="ex-speak-btn" onclick="speakExample()" style="margin: 0; padding: 4px 8px;">🔊 예문 듣기</button>
+          </div>
+          <p id="example-en" style="margin-bottom: 5px; font-weight: 600;"></p>
+          <p id="example-ko" style="color: var(--text-muted); font-size: 0.9rem;"></p>
+        </div>
+
+        <button id="next-btn" onclick="nextQuestion()">다음 문제 ➔</button>
+      </div>
+
+      <!-- 랭킹 보드 -->
+      <div id="scoreboard-container" style="margin-top: 40px; display: none;">
+        <h3 style="margin-bottom: 20px; color: var(--primary-color);">🏆 실시간 학습 랭킹</h3>
+        <div id="scoreboard-list" class="article-card" style="padding: 0; overflow: hidden;">
+          <!-- 랭킹 항목이 여기에 동적으로 추가됨 -->
+        </div>
+        <button onclick="location.reload()" class="btn-main" style="background: var(--secondary-color); color: var(--text-primary); margin-top: 15px; width: 100%;">처음으로 돌아가기</button>
+      </div>
     </section>
 
     <!-- 학습 가이드 요약 섹션 -->

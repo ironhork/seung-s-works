@@ -930,6 +930,8 @@ function setLimit(limit) { questionLimit = limit; }
 function startQuiz() {
   review = false; isVocaQuiz = false; score = 0; total = 0; currentQuestionNum = 0;
   if (scoreboardContainer) scoreboardContainer.style.display = 'none';
+  const quizSetup = document.getElementById('quiz-setup');
+  if (quizSetup) quizSetup.style.display = 'none';
   const scoreBoard = document.getElementById('score-board');
   if (scoreBoard) scoreBoard.style.display = 'block';
   nextQuestion();
@@ -939,6 +941,10 @@ function reviewMode() {
   if (wrongWords.length === 0) { alert('복습할 단어가 없습니다'); return; }
   review = true; isVocaQuiz = false; score = 0; total = 0; currentQuestionNum = 0;
   if (scoreboardContainer) scoreboardContainer.style.display = 'none';
+  const quizSetup = document.getElementById('quiz-setup');
+  if (quizSetup) quizSetup.style.display = 'none';
+  const scoreBoard = document.getElementById('score-board');
+  if (scoreBoard) scoreBoard.style.display = 'block';
   nextQuestion();
 }
 
@@ -946,6 +952,10 @@ function vocaQuizMode() {
   if (customVoca.length < 4) { alert('나만의 단어장에 최소 4개 이상의 단어가 필요합니다!'); return; }
   review = false; isVocaQuiz = true; score = 0; total = 0; currentQuestionNum = 0;
   if (scoreboardContainer) scoreboardContainer.style.display = 'none';
+  const quizSetup = document.getElementById('quiz-setup');
+  if (quizSetup) quizSetup.style.display = 'none';
+  const scoreBoard = document.getElementById('score-board');
+  if (scoreBoard) scoreBoard.style.display = 'block';
   nextQuestion();
 }
 
@@ -1077,6 +1087,12 @@ function renderVoca() {
     `;
     vocaList.appendChild(li);
   });
+  
+  // 단어 개수 업데이트
+  const vocaCountEl = document.getElementById('voca-count');
+  if (vocaCountEl) {
+    vocaCountEl.innerText = customVoca.length;
+  }
 }
 
 function addCustomWord() {
@@ -1140,7 +1156,15 @@ function showWordOfTheDay() {
   loadScoreboard(); 
   renderVoca(); 
   showWordOfTheDay();
+
+  // 단어장 페이지에서 퀴즈로 학습하기 버튼을 눌러 이동한 경우
+  if (localStorage.getItem('startVocaQuiz') === 'true') {
+    localStorage.removeItem('startVocaQuiz');
+    setTimeout(() => {
+      vocaQuizMode();
+    }, 300);
+  }
 })();
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && nextBtn.style.display === 'block') nextQuestion();
+  if (e.key === 'Enter' && nextBtn && nextBtn.style.display === 'block') nextQuestion();
 });

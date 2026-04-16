@@ -92,18 +92,8 @@
         alert('나만의 단어장에 최소 4개 이상의 단어가 필요합니다!');
         return;
       }
-      location.href = 'index.html#quiz-section';
       localStorage.setItem('startVocaQuiz', 'true');
-    }
-
-    // Check if we should start vocabulary quiz on page load
-    if (localStorage.getItem('startVocaQuiz') === 'true') {
-      localStorage.removeItem('startVocaQuiz');
-      setTimeout(() => {
-        if (typeof vocaQuizMode === 'function') {
-          vocaQuizMode();
-        }
-      }, 100);
+      location.href = 'index.html#quiz-section';
     }
   </script>
 </body>
