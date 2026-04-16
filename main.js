@@ -799,6 +799,8 @@ const vocaContent = document.getElementById('voca-content');
 const vocaList = document.getElementById('voca-list');
 const vocaWordInput = document.getElementById('voca-word');
 const vocaMeaningInput = document.getElementById('voca-meaning');
+const mainStartContainer = document.getElementById('main-start-container');
+const quizSetup = document.getElementById('quiz-setup');
 
 // 섹션 전환 기능
 function showSection(sectionId) {
@@ -808,6 +810,15 @@ function showSection(sectionId) {
     if (el) el.style.display = (s === sectionId) ? 'block' : 'none';
   });
   window.scrollTo(0, 0);
+}
+
+// 학습 설정 화면 표시
+function showQuizSetup() {
+  if (mainStartContainer) mainStartContainer.style.display = 'none';
+  if (quizSetup) quizSetup.style.display = 'block';
+  // 퀴즈 섹션으로 스크롤
+  const quizSection = document.getElementById('quiz-section');
+  if (quizSection) quizSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 // 탭 전환 기능
