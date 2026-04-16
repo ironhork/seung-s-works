@@ -353,6 +353,14 @@ footer { padding: 50px 20px; text-align: center; color: var(--text-muted); }
 
 @media (max-width: 600px) {
   .nav-menu { display: none; }
-  .choices-grid { grid-template-columns: 1fr; }
+  .choices-grid { grid-template-columns: 1fr; gap: 8px; }
   .action-btns { flex-direction: column; gap: 10px; }
+  .container { margin: 15px auto; padding: 0 12px; }
+  section { padding: 25px 15px; border-radius: 16px; }
+  #word { font-size: 36px; }
+  .btn-main, #next-btn, .choice { padding: 16px; font-size: 16px; }
+  #voca-content { width: calc(100vw - 40px); right: -10px; bottom: 80px; }
+  .nav-container { height: 60px; padding: 0 15px; }
+  .logo { font-size: 18px; }
+  h1 { font-size: 24px; }
 }

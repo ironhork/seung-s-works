@@ -825,6 +825,17 @@ function showQuizSetup() {
   if (quizSection) quizSection.scrollIntoView({ behavior: 'smooth' });
 }
 
+// 상단 헤더 '학습하기' 버튼 클릭 시 실행
+function headerStartLearning() {
+  const isIndex = location.pathname.endsWith('index.html') || location.pathname.endsWith('/') || location.pathname === '';
+  if (isIndex) {
+    showQuizSetup();
+  } else {
+    localStorage.setItem('autoShowQuizSetup', 'true');
+    location.href = 'index.html';
+  }
+}
+
 // 탭 전환 기능
 function openTab(evt, tabName) {
   const tabContents = document.getElementsByClassName("tab-content");
@@ -1171,6 +1182,14 @@ function showWordOfTheDay() {
   loadScoreboard(); 
   renderVoca(); 
   showWordOfTheDay();
+
+  // 상단 헤더 학습하기 버튼 등으로 이동한 경우
+  if (localStorage.getItem('autoShowQuizSetup') === 'true') {
+    localStorage.removeItem('autoShowQuizSetup');
+    setTimeout(() => {
+      showQuizSetup();
+    }, 300);
+  }
 
   // 단어장 페이지에서 퀴즈로 학습하기 버튼을 눌러 이동한 경우
   if (localStorage.getItem('startVocaQuiz') === 'true') {
