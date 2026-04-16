@@ -801,6 +801,8 @@ const vocaWordInput = document.getElementById('voca-word');
 const vocaMeaningInput = document.getElementById('voca-meaning');
 const mainStartContainer = document.getElementById('main-start-container');
 const quizSetup = document.getElementById('quiz-setup');
+const resourceSection = document.getElementById('resource-section');
+const wotdContainer = document.getElementById('wotd-container');
 
 // 섹션 전환 기능
 function showSection(sectionId) {
@@ -815,6 +817,8 @@ function showSection(sectionId) {
 // 학습 설정 화면 표시
 function showQuizSetup() {
   if (mainStartContainer) mainStartContainer.style.display = 'none';
+  if (resourceSection) resourceSection.style.display = 'none';
+  if (wotdContainer) wotdContainer.style.display = 'none';
   if (quizSetup) quizSetup.style.display = 'block';
   // 퀴즈 섹션으로 스크롤
   const quizSection = document.getElementById('quiz-section');
